@@ -1,0 +1,323 @@
+openapi: 3.0.0
+info:
+    title: Vertex
+    description: A platform to manage your self-hosted server.
+    version: 0.0.0
+servers:
+    - url: http://{ip}:{port}/api
+      variables:
+        ip:
+            default: localhost
+            description: The IP address of the server.
+        port:
+            default: "6130"
+            description: The port of the server.
+paths:
+    /apps:
+        get:
+            summary: Get all apps.
+            tags:
+                - apps
+            responses:
+                "200":
+                    description: The list of apps.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Meta'
+    /hardware:
+        get:
+            summary: Get hardware.
+            tags:
+                - hardware
+            responses:
+                "200":
+                    description: The hardware.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Hardware'
+    /security/ssh:
+        get:
+            summary: Get all SSH keys.
+            tags:
+                - ssh
+            responses:
+                "200":
+                    description: The list of SSH keys.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PublicKey'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        post:
+            summary: Add an SSH key.
+            tags:
+                - ssh
+            requestBody:
+                description: The SSH key to add.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddSSHKeyBody'
+            responses:
+                "201":
+                    description: Created.
+                "400":
+                    description: Bad request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /security/ssh/{fingerprint}:
+        delete:
+            summary: Delete an SSH key.
+            tags:
+                - ssh
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "204":
+                    description: No content.
+                "400":
+                    description: Bad request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /settings:
+        get:
+            summary: Get settings.
+            tags:
+                - settings
+            responses:
+                "200":
+                    description: The settings.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Settings'
+        patch:
+            summary: Update settings.
+            tags:
+                - settings
+            requestBody:
+                description: The settings to update.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Settings'
+            responses:
+                "200":
+                    description: Success.
+                "400":
+                    description: Bad request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /update:
+        get:
+            summary: Get the latest version information.
+            tags:
+                - updates
+            responses:
+                "200":
+                    description: The latest version information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Update'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        post:
+            summary: Install the latest version.
+            tags:
+                - updates
+            responses:
+                "204":
+                    description: No content.
+                "400":
+                    description: Bad request.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    description: Internal error.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+components:
+    responses:
+        "200":
+            description: Success.
+        "201":
+            description: Created.
+        "204":
+            description: No content.
+        "400":
+            description: Bad request.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "404":
+            description: Resource not found.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "409":
+            description: Conflict.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "422":
+            description: Unprocessable entity.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "500":
+            description: Internal error.
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+    schemas:
+        AddSSHKeyBody:
+            type: object
+            properties:
+                authorized_key:
+                    type: string
+        Baseline:
+            type: object
+            properties:
+                date:
+                    type: string
+                description:
+                    type: string
+                version:
+                    type: string
+                vertex:
+                    type: string
+                vertex_client:
+                    type: string
+                vertex_services:
+                    type: string
+        ErrCode:
+            type: string
+        Error:
+            type: object
+            properties:
+                code:
+                    $ref: '#/components/schemas/ErrCode'
+                message:
+                    type: string
+        Hardware:
+            type: object
+            properties:
+                dockerized:
+                    type: boolean
+                host:
+                    $ref: '#/components/schemas/Host'
+        Host:
+            type: object
+            properties:
+                arch:
+                    type: string
+                name:
+                    type: string
+                os:
+                    type: string
+                platform:
+                    type: string
+                version:
+                    type: string
+        Meta:
+            type: object
+            properties:
+                category:
+                    type: string
+                description:
+                    type: string
+                icon:
+                    type: string
+                id:
+                    type: string
+                name:
+                    type: string
+        PublicKey:
+            type: object
+            properties:
+                fingerprint_sha_256:
+                    type: string
+                type:
+                    type: string
+        Settings:
+            type: object
+            properties:
+                notifications:
+                    $ref: '#/components/schemas/SettingsNotifications'
+                updates:
+                    $ref: '#/components/schemas/SettingsUpdates'
+        SettingsNotifications:
+            type: object
+            properties:
+                webhook:
+                    type: string
+        SettingsUpdates:
+            type: object
+            properties:
+                channel:
+                    $ref: '#/components/schemas/SettingsUpdatesChannel'
+        SettingsUpdatesChannel:
+            type: string
+        Update:
+            type: object
+            properties:
+                baseline:
+                    $ref: '#/components/schemas/Baseline'
+                updating:
+                    type: boolean
