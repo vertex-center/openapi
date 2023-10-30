@@ -3,12 +3,38 @@ info:
     title: Vertex
     description: A platform to manage your self-hosted server.
     version: 0.0.0
+servers:
+    - url: http://{ip}:{port}/api
+      variables:
+        ip:
+            default: localhost
+            description: The IP address of the server.
+        port:
+            default: "6130"
+            description: The port of the server.
+    - url: http://{ip}:{port-kernel}/api
+      variables:
+        ip:
+            default: localhost
+            description: The IP address of the kernel.
+        port:
+            default: "6131"
+            description: The port of the server.
 paths:
     /apps:
         get:
             summary: Get all apps.
             tags:
                 - apps
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "200":
                     description: The list of apps.
@@ -23,6 +49,15 @@ paths:
             summary: Get hardware.
             tags:
                 - hardware
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "200":
                     description: The hardware.
@@ -35,6 +70,15 @@ paths:
             summary: Get all SSH keys.
             tags:
                 - ssh
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "200":
                     description: The list of SSH keys.
@@ -54,6 +98,15 @@ paths:
             summary: Add an SSH key.
             tags:
                 - ssh
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             requestBody:
                 description: The SSH key to add.
                 required: true
@@ -81,6 +134,15 @@ paths:
             summary: Delete an SSH key.
             tags:
                 - ssh
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             parameters:
                 - in: query
                   name: fingerprint
@@ -108,6 +170,15 @@ paths:
             summary: Get settings.
             tags:
                 - settings
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "200":
                     description: The settings.
@@ -119,6 +190,15 @@ paths:
             summary: Update settings.
             tags:
                 - settings
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             requestBody:
                 description: The settings to update.
                 required: true
@@ -146,6 +226,15 @@ paths:
             summary: Get the latest version information.
             tags:
                 - updates
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "200":
                     description: The latest version information.
@@ -163,6 +252,15 @@ paths:
             summary: Install the latest version.
             tags:
                 - updates
+            servers:
+                - url: http://{ip}:{port}/api
+                  variables:
+                    ip:
+                        default: localhost
+                        description: The IP address of the server.
+                    port:
+                        default: "6130"
+                        description: The port of the server.
             responses:
                 "204":
                     description: No content.
