@@ -61,7 +61,8 @@ jobs:
           if [ -f openapi/${{ steps.setup-variables.outputs.PATH }} ]; then
             rm openapi/${{ steps.setup-variables.outputs.PATH }}
           fi
-          cp docapi/openapi.yaml openapi/${{ steps.setup-variables.outputs.PATH }}
+          cp docapi/openapi.vertex.yaml openapi/openapi.vertex.${{ steps.setup-variables.outputs.PATH }}
+          cp docapi/openapi.kernel.yaml openapi/openapi.kernel.${{ steps.setup-variables.outputs.PATH }}
 
       - name: Commit and push changes if needed
         run: |
@@ -72,7 +73,7 @@ jobs:
             echo "No changes to commit"
           else
             git add .
-            git commit -m "Update ${{ steps.setup-variables.outputs.PATH }}"
+            git commit -m "Update openapi.*.${{ steps.setup-variables.outputs.PATH }}"
             git push
           fi
           cd ..
