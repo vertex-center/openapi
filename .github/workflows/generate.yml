@@ -1,0 +1,94 @@
+name: Run docapi
+
+on:
+  repository_dispatch:
+    types: [docapi]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    concurrency:
+      # Ensure that only one job runs at a time, to avoid push conflicts
+      group: docapi
+    steps:
+      - name: Setup variables
+        id: setup-variables
+        run: |
+          REF=${{ github.event.client_payload.ref }}
+          if [ "$REF" = "refs/heads/dev" ]; then
+            echo "PATH=dev.yaml" >> $GITHUB_OUTPUT
+          elif [[ "$REF" =~ ^v[0-9].*beta ]]; then
+            echo "PATH=beta.yaml" >> $GITHUB_OUTPUT
+          elif [[ "$REF" =~ ^v[0-9] ]]; then
+            echo "PATH=stable.yaml" >> $GITHUB_OUTPUT
+          else
+            echo "Invalid ref: $REF"
+            exit 1
+          fi
+
+      - name: Download Vertex
+        uses: actions/checkout@v4
+        with:
+          repository: vertex-center/vertex
+          ref: ${{ github.event.client_payload.ref }}
+          path: vertex
+
+      - name: Download docapi
+        uses: actions/checkout@v4
+        with:
+          repository: quentinguidee/docapi
+          path: docapi
+
+      - name: Download Vertex-OpenAPI
+        uses: actions/checkout@v4
+        with:
+          repository: vertex-center/openapi
+          path: openapi
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+
+      - name: Generate openapi.yaml
+        run: |
+          cd docapi
+          go run ./cmd ../vertex
+          cd ..
+          if [ -f openapi/${{ steps.setup-variables.outputs.PATH }} ]; then
+            rm openapi/${{ steps.setup-variables.outputs.PATH }}
+          fi
+          cp docapi/openapi.yaml openapi/${{ steps.setup-variables.outputs.PATH }}
+
+      - name: Commit and push changes if needed
+        run: |
+          cd openapi
+          git config user.email "149347004+vertex-nexa[bot]@users.noreply.github.com"
+          git config user.name "vertex-nexa[bot]"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit"
+          else
+            git add .
+            git commit -m "Update ${{ steps.setup-variables.outputs.PATH }}"
+            git push
+          fi
+          cd ..
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Create release if needed
+        if: startsWith(github.event.client_payload.ref, 'refs/tags/v')
+        run: |
+          cd openapi
+          git tag $REF
+          git push origin $REF
+          if [[ "$REF" =~ beta ]]; then
+            gh release create $REF --title "OpenAPI for Vertex $REF" --verify-tag --prerelease
+          else
+            gh release create $REF --title "OpenAPI for Vertex $REF" --verify-tag
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
