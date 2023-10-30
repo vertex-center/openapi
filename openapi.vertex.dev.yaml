@@ -15,6 +15,7 @@ servers:
 paths:
     /apps:
         get:
+            operationId: get_apps
             summary: Get all apps.
             tags:
                 - apps
@@ -29,6 +30,7 @@ paths:
                                     $ref: '#/components/schemas/Meta'
     /hardware:
         get:
+            operationId: get_hardware
             summary: Get hardware.
             tags:
                 - hardware
@@ -41,6 +43,7 @@ paths:
                                 $ref: '#/components/schemas/Hardware'
     /security/ssh:
         get:
+            operationId: get_ssh_keys
             summary: Get all SSH keys.
             tags:
                 - ssh
@@ -54,12 +57,9 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PublicKey'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
         post:
+            operationId: add_ssh_key
             summary: Add an SSH key.
             tags:
                 - ssh
@@ -72,21 +72,14 @@ paths:
                             $ref: '#/components/schemas/AddSSHKeyBody'
             responses:
                 "201":
-                    description: Created.
+                    $ref: '#/components/responses/201'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
     /security/ssh/{fingerprint}:
         delete:
+            operationId: delete_ssh_key
             summary: Delete an SSH key.
             tags:
                 - ssh
@@ -99,21 +92,14 @@ paths:
                     type: string
             responses:
                 "204":
-                    description: No content.
+                    $ref: '#/components/responses/204'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
     /settings:
         get:
+            operationId: get_settings
             summary: Get settings.
             tags:
                 - settings
@@ -125,6 +111,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Settings'
         patch:
+            operationId: patch_settings
             summary: Update settings.
             tags:
                 - settings
@@ -137,21 +124,14 @@ paths:
                             $ref: '#/components/schemas/Settings'
             responses:
                 "200":
-                    description: Success.
+                    $ref: '#/components/responses/200'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
     /update:
         get:
+            operationId: get_updates
             summary: Get the latest version information.
             tags:
                 - updates
@@ -163,30 +143,19 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Update'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
         post:
+            operationId: install_update
             summary: Install the latest version.
             tags:
                 - updates
             responses:
                 "204":
-                    description: No content.
+                    $ref: '#/components/responses/204'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
 components:
     responses:
         "200":

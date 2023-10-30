@@ -15,6 +15,7 @@ servers:
 paths:
     /security/ssh:
         get:
+            operationId: get_ssh_keys_kernel
             summary: Get all SSH keys.
             tags:
                 - ssh
@@ -28,12 +29,9 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/PublicKey'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
         post:
+            operationId: add_ssh_key_kernel
             summary: Add an SSH key to the authorized_keys file.
             tags:
                 - ssh
@@ -46,21 +44,14 @@ paths:
                             type: string
             responses:
                 "201":
-                    description: Created.
+                    $ref: '#/components/responses/201'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
     /security/ssh/{fingerprint}:
         delete:
+            operationId: delete_ssh_key_kernel
             summary: Delete an SSH key from the authorized_keys file.
             tags:
                 - ssh
@@ -73,19 +64,11 @@ paths:
                     type: string
             responses:
                 "204":
-                    description: No content.
+                    $ref: '#/components/responses/204'
                 "400":
-                    description: Bad request.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/400'
                 "500":
-                    description: Internal error.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+                    $ref: '#/components/responses/500'
 components:
     responses:
         "200":
