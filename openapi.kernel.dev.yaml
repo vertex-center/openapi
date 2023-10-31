@@ -108,26 +108,6 @@ components:
                     schema:
                         $ref: '#/components/schemas/Error'
     schemas:
-        AddSSHKeyBody:
-            type: object
-            properties:
-                authorized_key:
-                    type: string
-        Baseline:
-            type: object
-            properties:
-                date:
-                    type: string
-                description:
-                    type: string
-                version:
-                    type: string
-                vertex:
-                    type: string
-                vertex_client:
-                    type: string
-                vertex_services:
-                    type: string
         ErrCode:
             type: string
         Error:
@@ -137,39 +117,6 @@ components:
                     $ref: '#/components/schemas/ErrCode'
                 message:
                     type: string
-        Hardware:
-            type: object
-            properties:
-                dockerized:
-                    type: boolean
-                host:
-                    $ref: '#/components/schemas/Host'
-        Host:
-            type: object
-            properties:
-                arch:
-                    type: string
-                name:
-                    type: string
-                os:
-                    type: string
-                platform:
-                    type: string
-                version:
-                    type: string
-        Meta:
-            type: object
-            properties:
-                category:
-                    type: string
-                description:
-                    type: string
-                icon:
-                    type: string
-                id:
-                    type: string
-                name:
-                    type: string
         PublicKey:
             type: object
             properties:
@@ -177,29 +124,3 @@ components:
                     type: string
                 type:
                     type: string
-        Settings:
-            type: object
-            properties:
-                notifications:
-                    $ref: '#/components/schemas/SettingsNotifications'
-                updates:
-                    $ref: '#/components/schemas/SettingsUpdates'
-        SettingsNotifications:
-            type: object
-            properties:
-                webhook:
-                    type: string
-        SettingsUpdates:
-            type: object
-            properties:
-                channel:
-                    $ref: '#/components/schemas/SettingsUpdatesChannel'
-        SettingsUpdatesChannel:
-            type: string
-        Update:
-            type: object
-            properties:
-                baseline:
-                    $ref: '#/components/schemas/Baseline'
-                updating:
-                    type: boolean
