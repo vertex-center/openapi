@@ -28,15 +28,15 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Meta'
-    /hard-reset:
+    /debug/hard-reset:
         post:
             operationId: hard_reset
-            summary: Hard reset.
+            summary: Hard reset the Vertex server.
             tags:
                 - debug
             responses:
-                "200":
-                    $ref: '#/components/responses/200'
+                "204":
+                    $ref: '#/components/responses/204'
     /hardware:
         get:
             operationId: get_hardware
