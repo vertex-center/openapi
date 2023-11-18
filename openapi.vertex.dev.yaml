@@ -18,7 +18,7 @@ paths:
             operationId: get_apps
             summary: Get all apps.
             tags:
-                - apps
+                - Apps
             responses:
                 "200":
                     description: The list of apps.
@@ -33,7 +33,7 @@ paths:
             operationId: hard_reset
             summary: Hard reset the Vertex server.
             tags:
-                - debug
+                - Debug
             responses:
                 "204":
                     $ref: '#/components/responses/204'
@@ -42,7 +42,7 @@ paths:
             operationId: get_hardware
             summary: Get hardware.
             tags:
-                - hardware
+                - Hardware
             responses:
                 "200":
                     description: The hardware.
@@ -55,7 +55,7 @@ paths:
             operationId: get_ssh_keys
             summary: Get all SSH keys.
             tags:
-                - ssh
+                - Ssh
             responses:
                 "200":
                     description: The list of SSH keys.
@@ -71,7 +71,7 @@ paths:
             operationId: add_ssh_key
             summary: Add an SSH key.
             tags:
-                - ssh
+                - Ssh
             requestBody:
                 description: The SSH key to add.
                 required: true
@@ -91,7 +91,7 @@ paths:
             operationId: delete_ssh_key
             summary: Delete an SSH key.
             tags:
-                - ssh
+                - Ssh
             parameters:
                 - in: query
                   name: fingerprint
@@ -111,7 +111,7 @@ paths:
             operationId: get_settings
             summary: Get settings.
             tags:
-                - settings
+                - Settings
             responses:
                 "200":
                     description: The settings.
@@ -123,7 +123,7 @@ paths:
             operationId: patch_settings
             summary: Update settings.
             tags:
-                - settings
+                - Settings
             requestBody:
                 description: The settings to update.
                 required: true
@@ -143,7 +143,7 @@ paths:
             operationId: get_updates
             summary: Get the latest version information.
             tags:
-                - updates
+                - Updates
             responses:
                 "200":
                     description: The latest version information.
@@ -157,7 +157,7 @@ paths:
             operationId: install_update
             summary: Install the latest version.
             tags:
-                - updates
+                - Updates
             responses:
                 "204":
                     $ref: '#/components/responses/204'
