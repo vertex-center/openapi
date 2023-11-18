@@ -16,7 +16,7 @@ paths:
     /security/ssh:
         get:
             operationId: get_ssh_keys_kernel
-            summary: Get all SSH keys.
+            summary: Get all SSH keys
             tags:
                 - Ssh
             responses:
@@ -32,7 +32,7 @@ paths:
                     $ref: '#/components/responses/500'
         post:
             operationId: add_ssh_key_kernel
-            summary: Add an SSH key to the authorized_keys file.
+            summary: Add an SSH key to the authorized_keys file
             tags:
                 - Ssh
             requestBody:
@@ -52,7 +52,7 @@ paths:
     /security/ssh/{fingerprint}:
         delete:
             operationId: delete_ssh_key_kernel
-            summary: Delete an SSH key from the authorized_keys file.
+            summary: Delete an SSH key from the authorized_keys file
             tags:
                 - Ssh
             parameters:

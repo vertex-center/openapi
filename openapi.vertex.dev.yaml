@@ -16,7 +16,7 @@ paths:
     /apps:
         get:
             operationId: get_apps
-            summary: Get all apps.
+            summary: Get all apps
             tags:
                 - Apps
             responses:
@@ -31,7 +31,7 @@ paths:
     /debug/hard-reset:
         post:
             operationId: hard_reset
-            summary: Hard reset the Vertex server.
+            summary: Hard reset the server
             tags:
                 - Debug
             responses:
@@ -40,7 +40,7 @@ paths:
     /hardware:
         get:
             operationId: get_hardware
-            summary: Get hardware.
+            summary: Get hardware
             tags:
                 - Hardware
             responses:
@@ -53,7 +53,7 @@ paths:
     /security/ssh:
         get:
             operationId: get_ssh_keys
-            summary: Get all SSH keys.
+            summary: Get all SSH keys
             tags:
                 - Ssh
             responses:
@@ -69,7 +69,7 @@ paths:
                     $ref: '#/components/responses/500'
         post:
             operationId: add_ssh_key
-            summary: Add an SSH key.
+            summary: Add an SSH key
             tags:
                 - Ssh
             requestBody:
@@ -89,7 +89,7 @@ paths:
     /security/ssh/{fingerprint}:
         delete:
             operationId: delete_ssh_key
-            summary: Delete an SSH key.
+            summary: Delete SSH key
             tags:
                 - Ssh
             parameters:
@@ -109,7 +109,7 @@ paths:
     /settings:
         get:
             operationId: get_settings
-            summary: Get settings.
+            summary: Get settings
             tags:
                 - Settings
             responses:
@@ -121,7 +121,7 @@ paths:
                                 $ref: '#/components/schemas/Settings'
         patch:
             operationId: patch_settings
-            summary: Update settings.
+            summary: Patch settings
             tags:
                 - Settings
             requestBody:
@@ -141,7 +141,7 @@ paths:
     /update:
         get:
             operationId: get_updates
-            summary: Get the latest version information.
+            summary: Get the latest version info
             tags:
                 - Updates
             responses:
@@ -155,7 +155,7 @@ paths:
                     $ref: '#/components/responses/500'
         post:
             operationId: install_update
-            summary: Install the latest version.
+            summary: Install the latest version
             tags:
                 - Updates
             responses:
