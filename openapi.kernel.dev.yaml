@@ -13,6 +13,264 @@ servers:
             default: "6131"
             description: The port of the server.
 paths:
+    /app/vx-containers/containers:
+        get:
+            operationId: vx_containers_kernel_get_containers
+            summary: Get containers
+            tags:
+                - Apps/Containers
+            responses:
+                "200":
+                    description: The containers.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Container'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: vx_containers_kernel_create_container
+            summary: Create container
+            tags:
+                - Apps/Containers
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/reateContainerOption'
+            responses:
+                "200":
+                    description: The container.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Container'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}:
+        delete:
+            operationId: vx_containers_kernel_delete_container
+            summary: Delete container
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}/info:
+        "":
+            responses: {}
+    /app/vx-containers/containers/{id}/logs/stderr:
+        get:
+            operationId: vx_containers_kernel_logs_stderr_container
+            summary: Get container stderr logs
+            tags:
+                - Apps/Containers
+            description: Get container stderr logs as a stream.
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}/logs/stdout:
+        get:
+            operationId: vx_containers_kernel_logs_stdout_container
+            summary: Get container stdout logs
+            tags:
+                - Apps/Containers
+            description: Get container stdout logs as a stream.
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}/start:
+        post:
+            operationId: vx_containers_kernel_start_container
+            summary: Start container
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}/stop:
+        post:
+            operationId: vx_containers_kernel_stop_container
+            summary: Stop container
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/containers/{id}/wait/{cond}:
+        get:
+            operationId: vx_containers_kernel_wait_container
+            summary: Wait container
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The container id.
+                  required: true
+                  schema:
+                    type: string
+                - in: query
+                  name: cond
+                  description: The condition to wait for.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/image/{id}/info:
+        get:
+            operationId: vx_containers_kernel_info_image
+            summary: Get image info
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The image id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: The image.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InfoImageResponse'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/image/build:
+        post:
+            operationId: vx_containers_kernel_build_image
+            summary: Build image
+            tags:
+                - Apps/Containers
+            description: Build an image from a Dockerfile. The response is a stream of the logs.
+            requestBody:
+                description: The options to build the image.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BuildImageOptions'
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/image/pull:
+        post:
+            operationId: vx_containers_kernel_pull_image
+            summary: Pull image
+            tags:
+                - Apps/Containers
+            description: Pull an image from a registry. The response is a stream of the logs.
+            requestBody:
+                description: The options to pull the image.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PullImageOptions'
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/volume:
+        post:
+            operationId: vx_containers_kernel_create_volume
+            summary: Create volume
+            tags:
+                - Apps/Containers
+            requestBody:
+                description: The options to create the volume.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateVolumeOptions'
+            responses:
+                "200":
+                    description: The volume.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Volume'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/volume/{name}:
+        delete:
+            operationId: vx_containers_kernel_delete_volume
+            summary: Delete volume
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: name
+                  description: The volume name.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
     /security/ssh:
         get:
             operationId: get_ssh_keys_kernel
@@ -108,6 +366,50 @@ components:
                     schema:
                         $ref: '#/components/schemas/Error'
     schemas:
+        BuildImageOptions:
+            type: object
+            properties:
+                dir:
+                    type: string
+                dockerfile:
+                    type: string
+                name:
+                    type: string
+        Container:
+            type: object
+            properties:
+                cache_versions:
+                    type: array
+                    items:
+                        type: string
+                environment:
+                    $ref: '#/components/schemas/ContainerEnvVariables'
+                service:
+                    $ref: '#/components/schemas/Service'
+                service_update:
+                    $ref: '#/components/schemas/ServiceUpdate'
+                status:
+                    type: string
+                update:
+                    $ref: '#/components/schemas/ContainerUpdate'
+                uuid:
+                    $ref: '#/components/schemas/UUID'
+        ContainerEnvVariables:
+            type: object
+            anyOf:
+                - type: string
+        ContainerUpdate:
+            type: object
+            properties:
+                current_version:
+                    type: string
+                latest_version:
+                    type: string
+        CreateVolumeOptions:
+            type: object
+            properties:
+                name:
+                    type: string
         ErrCode:
             type: string
         Error:
@@ -117,6 +419,21 @@ components:
                     $ref: '#/components/schemas/ErrCode'
                 message:
                     type: string
+        InfoImageResponse:
+            type: object
+            properties:
+                architecture:
+                    type: string
+                id:
+                    type: string
+                os:
+                    type: string
+                size:
+                    type: int64
+                tags:
+                    type: array
+                    items:
+                        type: string
         PublicKey:
             type: object
             properties:
@@ -124,3 +441,24 @@ components:
                     type: string
                 type:
                     type: string
+        PullImageOptions:
+            type: object
+            properties:
+                image:
+                    type: string
+        Service:
+            type: object
+        ServiceUpdate:
+            type: object
+            properties:
+                available:
+                    type: boolean
+        UUID:
+            type: string
+        Volume:
+            type: object
+            properties:
+                name:
+                    type: string
+        reateContainerOption:
+            type: string
