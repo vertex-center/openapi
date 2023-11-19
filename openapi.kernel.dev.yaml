@@ -9,7 +9,7 @@ servers:
         ip:
             default: localhost
             description: The IP address of the kernel.
-        port:
+        port-kernel:
             default: "6131"
             description: The port of the server.
 paths:
