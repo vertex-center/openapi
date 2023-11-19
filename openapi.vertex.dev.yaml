@@ -31,9 +31,10 @@ paths:
     /debug/hard-reset:
         post:
             operationId: hard_reset
-            summary: Hard reset the server
+            summary: Hard reset
             tags:
                 - Debug
+            description: This route allows deleting all the server data, which can be useful for debugging purposes.
             responses:
                 "204":
                     $ref: '#/components/responses/204'
@@ -168,37 +169,37 @@ paths:
 components:
     responses:
         "200":
-            description: Success.
+            description: Success
         "201":
-            description: Created.
+            description: Created
         "204":
-            description: No content.
+            description: No content
         "400":
-            description: Bad request.
+            description: Bad request
             content:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/Error'
         "404":
-            description: Resource not found.
+            description: Resource not found
             content:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/Error'
         "409":
-            description: Conflict.
+            description: Conflict
             content:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/Error'
         "422":
-            description: Unprocessable entity.
+            description: Unprocessable entity
             content:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/Error'
         "500":
-            description: Internal error.
+            description: Internal error
             content:
                 application/json:
                     schema:
