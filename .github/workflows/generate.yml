@@ -20,9 +20,9 @@ jobs:
           REF=${{ github.event.client_payload.ref }}
           if [ "$REF" = "refs/heads/dev" ]; then
             echo "PATH=dev.yaml" >> $GITHUB_OUTPUT
-          elif [[ "$REF" =~ ^v[0-9].*beta ]]; then
+          elif [[ "$REF" =~ ^refs/tags/v*beta ]]; then
             echo "PATH=beta.yaml" >> $GITHUB_OUTPUT
-          elif [[ "$REF" =~ ^v[0-9] ]]; then
+          elif [[ "$REF" =~ ^refs/tags/v* ]]; then
             echo "PATH=stable.yaml" >> $GITHUB_OUTPUT
           else
             echo "Invalid ref: $REF"
