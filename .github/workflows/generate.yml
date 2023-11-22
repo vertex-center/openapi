@@ -84,12 +84,14 @@ jobs:
         if: startsWith(github.event.client_payload.ref, 'refs/tags/v')
         run: |
           cd openapi
-          git tag $REF
-          git push origin $REF
-          if [[ "$REF" =~ beta ]]; then
-            gh release create $REF --title "OpenAPI for Vertex $REF" --verify-tag --prerelease
+          REF=${{ github.event.client_payload.ref }}
+          TAG="${REF#refs/tags/}"
+          git tag $TAG
+          git push origin $TAG
+          if [[ "$TAG" =~ beta ]]; then
+            gh release create $TAG --title "OpenAPI for Vertex $TAG" --verify-tag --notes "" --prerelease
           else
-            gh release create $REF --title "OpenAPI for Vertex $REF" --verify-tag
+            gh release create $TAG --title "OpenAPI for Vertex $TAG" --verify-tag --notes ""
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
