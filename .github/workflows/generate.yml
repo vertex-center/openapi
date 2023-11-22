@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
-      - name: Create release if needed
+      - name: Create tag if needed
         if: startsWith(github.event.client_payload.ref, 'refs/tags/v')
         run: |
           cd openapi
@@ -88,10 +88,5 @@ jobs:
           TAG="${REF#refs/tags/}"
           git tag $TAG
           git push origin $TAG
-          if [[ "$TAG" =~ beta ]]; then
-            gh release create $TAG --title "OpenAPI for Vertex $TAG" --verify-tag --notes "" --prerelease
-          else
-            gh release create $TAG --title "OpenAPI for Vertex $TAG" --verify-tag --notes ""
-          fi
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
