@@ -13,7 +13,7 @@ servers:
             default: "6131"
             description: The port of the server.
 paths:
-    /app/vx-containers/containers:
+    /app/vx-containers/docker/containers:
         get:
             operationId: vx_containers_kernel_get_containers
             summary: Get containers
@@ -50,7 +50,7 @@ paths:
                                 $ref: '#/components/schemas/Container'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}:
+    /app/vx-containers/docker/containers/{id}:
         delete:
             operationId: vx_containers_kernel_delete_container
             summary: Delete container
@@ -70,10 +70,10 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}/info:
+    /app/vx-containers/docker/containers/{id}/info:
         "":
             responses: {}
-    /app/vx-containers/containers/{id}/logs/stderr:
+    /app/vx-containers/docker/containers/{id}/logs/stderr:
         get:
             operationId: vx_containers_kernel_logs_stderr_container
             summary: Get container stderr logs
@@ -92,7 +92,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}/logs/stdout:
+    /app/vx-containers/docker/containers/{id}/logs/stdout:
         get:
             operationId: vx_containers_kernel_logs_stdout_container
             summary: Get container stdout logs
@@ -111,7 +111,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}/start:
+    /app/vx-containers/docker/containers/{id}/start:
         post:
             operationId: vx_containers_kernel_start_container
             summary: Start container
@@ -129,7 +129,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}/stop:
+    /app/vx-containers/docker/containers/{id}/stop:
         post:
             operationId: vx_containers_kernel_stop_container
             summary: Stop container
@@ -147,7 +147,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/{id}/wait/{cond}:
+    /app/vx-containers/docker/containers/{id}/wait/{cond}:
         get:
             operationId: vx_containers_kernel_wait_container
             summary: Wait container
@@ -171,7 +171,25 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/image/{id}/info:
+    /app/vx-containers/docker/containers/mounts/{id}:
+        delete:
+            operationId: vx_containers_kernel_delete_mounts
+            summary: Delete mounts
+            tags:
+                - Apps/Containers
+            parameters:
+                - in: query
+                  name: id
+                  description: The container uuid.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/vx-containers/docker/image/{id}/info:
         get:
             operationId: vx_containers_kernel_info_image
             summary: Get image info
@@ -193,7 +211,7 @@ paths:
                                 $ref: '#/components/schemas/InfoImageResponse'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/image/build:
+    /app/vx-containers/docker/image/build:
         post:
             operationId: vx_containers_kernel_build_image
             summary: Build image
@@ -212,7 +230,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/image/pull:
+    /app/vx-containers/docker/image/pull:
         post:
             operationId: vx_containers_kernel_pull_image
             summary: Pull image
@@ -226,46 +244,6 @@ paths:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/PullImageOptions'
-            responses:
-                "200":
-                    $ref: '#/components/responses/200'
-                "500":
-                    $ref: '#/components/responses/500'
-    /app/vx-containers/volume:
-        post:
-            operationId: vx_containers_kernel_create_volume
-            summary: Create volume
-            tags:
-                - Apps/Containers
-            requestBody:
-                description: The options to create the volume.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateVolumeOptions'
-            responses:
-                "200":
-                    description: The volume.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Volume'
-                "500":
-                    $ref: '#/components/responses/500'
-    /app/vx-containers/volume/{name}:
-        delete:
-            operationId: vx_containers_kernel_delete_volume
-            summary: Delete volume
-            tags:
-                - Apps/Containers
-            parameters:
-                - in: query
-                  name: name
-                  description: The volume name.
-                  required: true
-                  schema:
-                    type: string
             responses:
                 "200":
                     $ref: '#/components/responses/200'
@@ -405,11 +383,6 @@ components:
                     type: string
                 latest_version:
                     type: string
-        CreateVolumeOptions:
-            type: object
-            properties:
-                name:
-                    type: string
         ErrCode:
             type: string
         Error:
@@ -455,10 +428,5 @@ components:
                     type: boolean
         UUID:
             type: string
-        Volume:
-            type: object
-            properties:
-                name:
-                    type: string
         reateContainerOption:
             type: string
