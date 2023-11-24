@@ -651,6 +651,25 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Hardware'
     /security/ssh:
+        delete:
+            operationId: delete_ssh_key
+            summary: Delete SSH key
+            tags:
+                - Ssh
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/DeleteSSHKeyBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
         get:
             operationId: get_ssh_keys
             summary: Get all SSH keys
@@ -686,24 +705,21 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /security/ssh/{fingerprint}:
-        delete:
-            operationId: delete_ssh_key
-            summary: Delete SSH key
+    /security/ssh/users:
+        get:
+            operationId: get_ssh_users
+            summary: Get all users that can have SSH keys
             tags:
                 - Ssh
-            parameters:
-                - in: query
-                  name: fingerprint
-                  description: The fingerprint of the SSH key to delete.
-                  required: true
-                  schema:
-                    type: string
             responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
+                "200":
+                    description: The list of users.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
     /settings:
@@ -816,6 +832,8 @@ components:
             properties:
                 authorized_key:
                     type: string
+                username:
+                    type: string
         Baseline:
             type: object
             properties:
@@ -874,6 +892,13 @@ components:
                     items:
                         $ref: '#/components/schemas/DB'
                 password:
+                    type: string
+                username:
+                    type: string
+        DeleteSSHKeyBody:
+            type: object
+            properties:
+                fingerprint:
                     type: string
                 username:
                     type: string
@@ -962,6 +987,8 @@ components:
                     type: string
                 type:
                     type: string
+                username:
+                    type: string
         Redirect:
             type: string
         Service:
@@ -999,5 +1026,7 @@ components:
                     $ref: '#/components/schemas/Baseline'
                 updating:
                     type: boolean
+        User:
+            type: object
         object:
             type: string
