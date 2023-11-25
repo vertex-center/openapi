@@ -637,7 +637,7 @@ paths:
             responses:
                 "204":
                     $ref: '#/components/responses/204'
-    /hardware:
+    /hardware/cpus:
         get:
             operationId: get_cpus
             summary: Get CPUs
@@ -652,6 +652,21 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/CPU'
+                "500":
+                    $ref: '#/components/responses/500'
+    /hardware/host:
+        get:
+            operationId: get_host
+            summary: Get host
+            tags:
+                - Hardware
+            responses:
+                "200":
+                    description: The host information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Host'
                 "500":
                     $ref: '#/components/responses/500'
     /security/ssh:
@@ -949,6 +964,35 @@ components:
                 code:
                     $ref: '#/components/schemas/ErrCode'
                 message:
+                    type: string
+        Host:
+            type: object
+            properties:
+                boot_time:
+                    type: uint64
+                host_id:
+                    type: string
+                hostname:
+                    type: string
+                kernel_arch:
+                    type: string
+                kernel_version:
+                    type: string
+                os:
+                    type: string
+                platform:
+                    type: string
+                platform_family:
+                    type: string
+                platform_version:
+                    type: string
+                procs:
+                    type: uint64
+                uptime:
+                    type: uint64
+                virtualization_role:
+                    type: string
+                virtualization_system:
                     type: string
         LogLine:
             type: object
