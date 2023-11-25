@@ -639,17 +639,21 @@ paths:
                     $ref: '#/components/responses/204'
     /hardware:
         get:
-            operationId: get_hardware
-            summary: Get hardware
+            operationId: get_cpus
+            summary: Get CPUs
             tags:
                 - Hardware
             responses:
                 "200":
-                    description: The hardware.
+                    description: The CPUs information.
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Hardware'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/CPU'
+                "500":
+                    $ref: '#/components/responses/500'
     /security/ssh:
         delete:
             operationId: delete_ssh_key
@@ -849,6 +853,37 @@ components:
                     type: string
                 vertex_services:
                     type: string
+        CPU:
+            type: object
+            properties:
+                cache_size:
+                    type: int32
+                core_id:
+                    type: string
+                cores_count:
+                    type: int32
+                count:
+                    type: int32
+                family:
+                    type: string
+                flags:
+                    type: array
+                    items:
+                        type: string
+                mhz:
+                    type: float64
+                microcode:
+                    type: string
+                model:
+                    type: string
+                model_name:
+                    type: string
+                physical_id:
+                    type: string
+                stepping:
+                    type: int32
+                vendor_id:
+                    type: string
         Container:
             type: object
             properties:
@@ -914,26 +949,6 @@ components:
                 code:
                     $ref: '#/components/schemas/ErrCode'
                 message:
-                    type: string
-        Hardware:
-            type: object
-            properties:
-                dockerized:
-                    type: boolean
-                host:
-                    $ref: '#/components/schemas/Host'
-        Host:
-            type: object
-            properties:
-                arch:
-                    type: string
-                name:
-                    type: string
-                os:
-                    type: string
-                platform:
-                    type: string
-                version:
                     type: string
         LogLine:
             type: object
