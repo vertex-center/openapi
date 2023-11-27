@@ -13,6 +13,103 @@ servers:
             default: "6130"
             description: The port of the server.
 paths:
+    /admin/db/dbms:
+        get:
+            operationId: get_current_dbms
+            summary: Get the current DBMS
+            tags:
+                - Admin/Data
+            description: Get the current database management system that Vertex is using.
+            responses:
+                "200":
+                    description: The current DBMS.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+        post:
+            operationId: migrate_to_dbms
+            summary: Migrate to a DBMS
+            tags:
+                - Admin/Data
+            description: Migrate Vertex to the given database management system.
+            requestBody:
+                description: The DBMS to migrate to.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MigrateToBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "304":
+                    $ref: '#/components/responses/304'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /admin/settings:
+        get:
+            operationId: get_settings
+            summary: Get settings
+            tags:
+                - Settings
+            responses:
+                "200":
+                    description: The settings.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Settings'
+                "500":
+                    $ref: '#/components/responses/500'
+        patch:
+            operationId: patch_settings
+            summary: Patch settings
+            tags:
+                - Settings
+            requestBody:
+                description: The settings to update.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Settings'
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /admin/update:
+        get:
+            operationId: get_updates
+            summary: Get the latest version info
+            tags:
+                - Updates
+            responses:
+                "200":
+                    description: The latest version information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Update'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: install_update
+            summary: Install the latest version
+            tags:
+                - Updates
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/vx-containers/container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
@@ -233,14 +330,14 @@ paths:
                     $ref: '#/components/responses/500'
     /app/vx-containers/container/{container_uuid}/wait:
         get:
-            operationId: vx_containers_wait
-            summary: Wait for a container event
+            operationId: vx_containers_wait_status
+            summary: Wait for a status change
             tags:
                 - Apps/Containers
             parameters:
                 - in: query
-                  name: cond
-                  description: The condition to wait for.
+                  name: status
+                  description: The status to wait for.
                   required: true
                   schema:
                     type: string
@@ -741,65 +838,6 @@ paths:
                                     $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
-    /settings:
-        get:
-            operationId: get_settings
-            summary: Get settings
-            tags:
-                - Settings
-            responses:
-                "200":
-                    description: The settings.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Settings'
-        patch:
-            operationId: patch_settings
-            summary: Patch settings
-            tags:
-                - Settings
-            requestBody:
-                description: The settings to update.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Settings'
-            responses:
-                "200":
-                    $ref: '#/components/responses/200'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /update:
-        get:
-            operationId: get_updates
-            summary: Get the latest version info
-            tags:
-                - Updates
-            responses:
-                "200":
-                    description: The latest version information.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Update'
-                "500":
-                    $ref: '#/components/responses/500'
-        post:
-            operationId: install_update
-            summary: Install the latest version
-            tags:
-                - Updates
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
 components:
     responses:
         "200":
@@ -808,6 +846,8 @@ components:
             description: Created
         "204":
             description: No content
+        "304":
+            description: Not modified
         "400":
             description: Bad request
             content:
@@ -1020,6 +1060,11 @@ components:
                     type: string
         Metrics:
             type: string
+        MigrateToBody:
+            type: object
+            properties:
+                dbms:
+                    type: string
         PatchBody:
             type: object
             properties:
@@ -1058,23 +1103,6 @@ components:
                 available:
                     type: boolean
         Settings:
-            type: object
-            properties:
-                notifications:
-                    $ref: '#/components/schemas/SettingsNotifications'
-                updates:
-                    $ref: '#/components/schemas/SettingsUpdates'
-        SettingsNotifications:
-            type: object
-            properties:
-                webhook:
-                    type: string
-        SettingsUpdates:
-            type: object
-            properties:
-                channel:
-                    $ref: '#/components/schemas/SettingsUpdatesChannel'
-        SettingsUpdatesChannel:
             type: string
         UUID:
             type: string
