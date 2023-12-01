@@ -120,7 +120,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/auth/login:
+    /app/auth/login:
         post:
             operationId: auth_login
             summary: Login
@@ -137,7 +137,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/auth/logout:
+    /app/auth/logout:
         post:
             operationId: auth_logout
             summary: Logout
@@ -148,9 +148,24 @@ paths:
                     $ref: '#/components/responses/204'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/auth/register:
+    /app/auth/register:
         post:
             responses: {}
+    /app/auth/user:
+        get:
+            operationId: auth_get_current_user
+            summary: Get user
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/containers/container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
@@ -1030,8 +1045,6 @@ components:
                     type: string
                 username:
                     type: string
-        DeletedAt:
-            type: string
         DockerContainerInfo:
             type: object
             anyOf:
@@ -1146,23 +1159,8 @@ components:
                     type: boolean
         Settings:
             type: string
-        Time:
-            type: string
         Token:
-            type: object
-            properties:
-                created_at:
-                    $ref: '#/components/schemas/Time'
-                deleted_at:
-                    $ref: '#/components/schemas/DeletedAt'
-                id:
-                    type: uint
-                token:
-                    type: string
-                updated_at:
-                    $ref: '#/components/schemas/Time'
-                user:
-                    $ref: '#/components/schemas/User'
+            type: string
         UUID:
             type: string
         Update:
