@@ -1155,6 +1155,8 @@ components:
                     $ref: '#/components/schemas/Time'
                 deleted_at:
                     $ref: '#/components/schemas/DeletedAt'
+                id:
+                    type: uint
                 token:
                     type: string
                 updated_at:
