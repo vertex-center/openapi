@@ -120,6 +120,21 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
+    /app/auth/credentials:
+        get:
+            operationId: auth_get_current_user_credentials
+            summary: Get user credentials
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user credentials
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserCredentials'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/auth/login:
         post:
             operationId: auth_login
@@ -178,8 +193,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/User'
-                "400":
-                    $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
     /app/containers/container/{container_uuid}:
@@ -1194,5 +1207,7 @@ components:
                     type: boolean
         User:
             type: object
+        UserCredentials:
+            type: string
         object:
             type: string
