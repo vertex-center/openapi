@@ -125,7 +125,7 @@ paths:
             operationId: get_cpus
             summary: Get CPUs
             tags:
-                - Hardware
+                - Apps/Admin/Hardware
             responses:
                 "200":
                     description: The CPUs information.
@@ -142,7 +142,7 @@ paths:
             operationId: get_host
             summary: Get host
             tags:
-                - Hardware
+                - Apps/Admin/Hardware
             responses:
                 "200":
                     description: The host information.
@@ -150,6 +150,78 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Host'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/ssh:
+        delete:
+            operationId: delete_ssh_key
+            summary: Delete SSH key
+            tags:
+                - Apps/Admin/SSH
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/DeleteSSHKeyBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+        get:
+            operationId: get_ssh_keys
+            summary: Get all SSH keys
+            tags:
+                - Apps/Admin/SSH
+            responses:
+                "200":
+                    description: The list of SSH keys.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PublicKey'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: add_ssh_key
+            summary: Add an SSH key
+            tags:
+                - Apps/Admin/SSH
+            requestBody:
+                description: The SSH key to add.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddSSHKeyBody'
+            responses:
+                "201":
+                    $ref: '#/components/responses/201'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/ssh/users:
+        get:
+            operationId: get_ssh_users
+            summary: Get all users that can have SSH keys
+            tags:
+                - Apps/Admin/SSH
+            responses:
+                "200":
+                    description: The list of users.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
     /app/auth/credentials:
@@ -851,78 +923,6 @@ paths:
             responses:
                 "204":
                     $ref: '#/components/responses/204'
-    /security/ssh:
-        delete:
-            operationId: delete_ssh_key
-            summary: Delete SSH key
-            tags:
-                - Ssh
-            parameters:
-                - in: query
-                  name: fingerprint
-                  description: The fingerprint of the SSH key to delete.
-                  required: true
-                  schema:
-                    $ref: '#/components/schemas/DeleteSSHKeyBody'
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-        get:
-            operationId: get_ssh_keys
-            summary: Get all SSH keys
-            tags:
-                - Ssh
-            responses:
-                "200":
-                    description: The list of SSH keys.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/PublicKey'
-                "500":
-                    $ref: '#/components/responses/500'
-        post:
-            operationId: add_ssh_key
-            summary: Add an SSH key
-            tags:
-                - Ssh
-            requestBody:
-                description: The SSH key to add.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/AddSSHKeyBody'
-            responses:
-                "201":
-                    $ref: '#/components/responses/201'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /security/ssh/users:
-        get:
-            operationId: get_ssh_users
-            summary: Get all users that can have SSH keys
-            tags:
-                - Ssh
-            responses:
-                "200":
-                    description: The list of users.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/User'
-                "500":
-                    $ref: '#/components/responses/500'
 components:
     responses:
         "200":

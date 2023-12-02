@@ -13,6 +13,82 @@ servers:
             default: "6131"
             description: The port of the server.
 paths:
+    /app/admin/ssh:
+        delete:
+            operationId: delete_ssh_key_kernel
+            summary: Delete an SSH key from the authorized_keys file
+            tags:
+                - Apps/Admin/SSH
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+        get:
+            operationId: get_ssh_keys_kernel
+            summary: Get all SSH keys
+            tags:
+                - Apps/Admin/SSH
+            responses:
+                "200":
+                    description: The list of SSH keys.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PublicKey'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: add_ssh_key_kernel
+            summary: Add an SSH key to the authorized_keys file
+            tags:
+                - Apps/Admin/SSH
+            requestBody:
+                description: Info about the key to append to the authorized_keys file.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddSSHKeyBody'
+            responses:
+                "201":
+                    $ref: '#/components/responses/201'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/ssh/users:
+        get:
+            operationId: get_ssh_users_kernel
+            summary: Get all users that can have SSH keys
+            tags:
+                - Apps/Admin/SSH
+            responses:
+                "200":
+                    description: The list of users.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/containers/docker/containers:
         get:
             operationId: vx_containers_kernel_get_containers
@@ -247,82 +323,6 @@ paths:
             responses:
                 "200":
                     $ref: '#/components/responses/200'
-                "500":
-                    $ref: '#/components/responses/500'
-    /security/ssh:
-        delete:
-            operationId: delete_ssh_key_kernel
-            summary: Delete an SSH key from the authorized_keys file
-            tags:
-                - Ssh
-            parameters:
-                - in: query
-                  name: fingerprint
-                  description: The fingerprint of the SSH key to delete.
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
-                "404":
-                    $ref: '#/components/responses/404'
-                "500":
-                    $ref: '#/components/responses/500'
-        get:
-            operationId: get_ssh_keys_kernel
-            summary: Get all SSH keys
-            tags:
-                - Ssh
-            responses:
-                "200":
-                    description: The list of SSH keys.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/PublicKey'
-                "500":
-                    $ref: '#/components/responses/500'
-        post:
-            operationId: add_ssh_key_kernel
-            summary: Add an SSH key to the authorized_keys file
-            tags:
-                - Ssh
-            requestBody:
-                description: Info about the key to append to the authorized_keys file.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/AddSSHKeyBody'
-            responses:
-                "201":
-                    $ref: '#/components/responses/201'
-                "400":
-                    $ref: '#/components/responses/400'
-                "404":
-                    $ref: '#/components/responses/404'
-                "500":
-                    $ref: '#/components/responses/500'
-    /security/ssh/users:
-        get:
-            operationId: get_ssh_users_kernel
-            summary: Get all users that can have SSH keys
-            tags:
-                - Ssh
-            responses:
-                "200":
-                    description: The list of users.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
 components:
