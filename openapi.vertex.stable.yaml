@@ -13,7 +13,189 @@ servers:
             default: "6130"
             description: The port of the server.
 paths:
-    /app/vx-containers/container/{container_uuid}:
+    /admin/checks:
+        get:
+            operationId: admin_checks
+            summary: Get all checks
+            tags:
+                - Admin/Checks
+            description: Check that all vertex requirements are met.
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+    /admin/db/dbms:
+        get:
+            operationId: get_current_dbms
+            summary: Get the current DBMS
+            tags:
+                - Admin/Data
+            description: Get the current database management system that Vertex is using.
+            responses:
+                "200":
+                    description: The current DBMS.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+        post:
+            operationId: migrate_to_dbms
+            summary: Migrate to a DBMS
+            tags:
+                - Admin/Data
+            description: Migrate Vertex to the given database management system.
+            requestBody:
+                description: The DBMS to migrate to.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MigrateToBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "304":
+                    $ref: '#/components/responses/304'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /admin/settings:
+        get:
+            operationId: get_settings
+            summary: Get settings
+            tags:
+                - Settings
+            responses:
+                "200":
+                    description: The settings.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Settings'
+                "500":
+                    $ref: '#/components/responses/500'
+        patch:
+            operationId: patch_settings
+            summary: Patch settings
+            tags:
+                - Settings
+            requestBody:
+                description: The settings to update.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Settings'
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /admin/update:
+        get:
+            operationId: get_updates
+            summary: Get the latest version info
+            tags:
+                - Updates
+            responses:
+                "200":
+                    description: The latest version information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Update'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: install_update
+            summary: Install the latest version
+            tags:
+                - Updates
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/credentials:
+        get:
+            operationId: auth_get_current_user_credentials
+            summary: Get user credentials
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user credentials
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserCredentials'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/login:
+        post:
+            operationId: auth_login
+            summary: Login
+            tags:
+                - Authentication
+            responses:
+                "200":
+                    description: The auth token
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Token'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/logout:
+        post:
+            operationId: auth_logout
+            summary: Logout
+            tags:
+                - Authentication
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/register:
+        post:
+            responses: {}
+    /app/auth/user:
+        get:
+            operationId: auth_get_current_user
+            summary: Get user
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
+        patch:
+            operationId: auth_patch_current_user
+            summary: Patch user
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
             summary: Delete a container
@@ -69,7 +251,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/docker:
+    /app/containers/container/{container_uuid}/docker:
         get:
             operationId: vx_containers_get_docker
             summary: Get Docker container info
@@ -86,7 +268,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/docker/recreate:
+    /app/containers/container/{container_uuid}/docker/recreate:
         post:
             operationId: vx_containers_recreate_docker
             summary: Recreate Docker container
@@ -99,7 +281,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/environment:
+    /app/containers/container/{container_uuid}/environment:
         patch:
             operationId: vx_containers_patch_environment
             summary: Patch a container environment
@@ -121,7 +303,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/events:
+    /app/containers/container/{container_uuid}/events:
         get:
             operationId: vx_containers_events_container
             summary: Get container events
@@ -135,7 +317,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/logs:
+    /app/containers/container/{container_uuid}/logs:
         get:
             operationId: vx_containers_get_logs
             summary: Get container logs
@@ -154,7 +336,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/start:
+    /app/containers/container/{container_uuid}/start:
         post:
             operationId: vx_containers_start_container
             summary: Start a container
@@ -173,7 +355,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/stop:
+    /app/containers/container/{container_uuid}/stop:
         post:
             operationId: vx_containers_stop_container
             summary: Stop a container
@@ -192,7 +374,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/update/service:
+    /app/containers/container/{container_uuid}/update/service:
         post:
             operationId: vx_containers_update_service
             summary: Update service
@@ -205,7 +387,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/versions:
+    /app/containers/container/{container_uuid}/versions:
         get:
             operationId: vx_containers_get_versions
             summary: Get container versions
@@ -231,16 +413,16 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/container/{container_uuid}/wait:
+    /app/containers/container/{container_uuid}/wait:
         get:
-            operationId: vx_containers_wait
-            summary: Wait for a container event
+            operationId: vx_containers_wait_status
+            summary: Wait for a status change
             tags:
                 - Apps/Containers
             parameters:
                 - in: query
-                  name: cond
-                  description: The condition to wait for.
+                  name: status
+                  description: The status to wait for.
                   required: true
                   schema:
                     type: string
@@ -251,7 +433,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers:
+    /app/containers/containers:
         get:
             operationId: vx_containers_get_containers
             summary: Get containers
@@ -266,7 +448,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Container'
-    /app/vx-containers/containers/checkupdates:
+    /app/containers/containers/checkupdates:
         get:
             operationId: vx_containers_check_updates
             summary: Check for updates
@@ -283,7 +465,7 @@ paths:
                                     $ref: '#/components/schemas/Container'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/events:
+    /app/containers/containers/events:
         get:
             operationId: vx_containers_events
             summary: Get events
@@ -295,7 +477,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/containers/search:
+    /app/containers/containers/search:
         get:
             operationId: vx_containers_search
             summary: Search containers
@@ -327,7 +509,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Container'
-    /app/vx-containers/containers/tags:
+    /app/containers/containers/tags:
         get:
             operationId: vx_containers_get_tags
             summary: Get tags
@@ -342,7 +524,7 @@ paths:
                                 type: array
                                 items:
                                     type: string
-    /app/vx-containers/service/{service_id}:
+    /app/containers/service/{service_id}:
         get:
             operationId: vx_containers_get_service
             summary: Get service
@@ -366,7 +548,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "404":
                     $ref: '#/components/responses/404'
-    /app/vx-containers/service/{service_id}/install:
+    /app/containers/service/{service_id}/install:
         post:
             operationId: vx_containers_install_service
             summary: Install a service
@@ -392,7 +574,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-containers/services:
+    /app/containers/services:
         get:
             operationId: vx_containers_get_services
             summary: Get services
@@ -407,7 +589,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Service'
-    /app/vx-devtools-service-editor/editor/to-yaml:
+    /app/devtools-service-editor/editor/to-yaml:
         post:
             operationId: vx_devtools_service_editor_to_yaml
             summary: Convert service to yaml
@@ -430,7 +612,7 @@ paths:
                                 type: string
                 "400":
                     $ref: '#/components/responses/400'
-    /app/vx-monitoring/collector/{collector}/install:
+    /app/monitoring/collector/{collector}/install:
         post:
             operationId: vx_monitoring_install_collector
             summary: Install a collector
@@ -452,7 +634,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-monitoring/metrics:
+    /app/monitoring/metrics:
         get:
             operationId: vx_monitoring_get_metrics
             summary: Get metrics
@@ -465,7 +647,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Metrics'
-    /app/vx-monitoring/visualizer/{visualizer}/install:
+    /app/monitoring/visualizer/{visualizer}/install:
         post:
             operationId: vx_monitoring_install_visualizer
             summary: Install a visualizer
@@ -487,7 +669,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-reverse-proxy/redirect:
+    /app/reverse-proxy/redirect:
         post:
             operationId: vx_reverse_proxy_add_redirect
             summary: Add redirect
@@ -507,7 +689,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-reverse-proxy/redirect/{id}:
+    /app/reverse-proxy/redirect/{id}:
         delete:
             operationId: vx_reverse_proxy_remove_redirect
             summary: Remove redirect
@@ -527,7 +709,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-reverse-proxy/redirects:
+    /app/reverse-proxy/redirects:
         get:
             operationId: vx_reverse_proxy_get_redirects
             summary: Get redirects
@@ -542,7 +724,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Redirect'
-    /app/vx-sql/container/{container_uuid}:
+    /app/sql/container/{container_uuid}:
         get:
             operationId: vx_sql_get_dbms
             summary: Get an installed DBMS
@@ -568,7 +750,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-sql/dbms/{dbms}/install:
+    /app/sql/dbms/{dbms}/install:
         post:
             operationId: vx_sql_install_dbms
             summary: Install a DBMS
@@ -594,7 +776,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/vx-tunnels/provider/{provider}/install:
+    /app/tunnels/provider/{provider}/install:
         post:
             operationId: vx_tunnels_install_provider
             summary: Install a tunnel provider
@@ -637,20 +819,58 @@ paths:
             responses:
                 "204":
                     $ref: '#/components/responses/204'
-    /hardware:
+    /hardware/cpus:
         get:
-            operationId: get_hardware
-            summary: Get hardware
+            operationId: get_cpus
+            summary: Get CPUs
             tags:
                 - Hardware
             responses:
                 "200":
-                    description: The hardware.
+                    description: The CPUs information.
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Hardware'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/CPU'
+                "500":
+                    $ref: '#/components/responses/500'
+    /hardware/host:
+        get:
+            operationId: get_host
+            summary: Get host
+            tags:
+                - Hardware
+            responses:
+                "200":
+                    description: The host information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Host'
+                "500":
+                    $ref: '#/components/responses/500'
     /security/ssh:
+        delete:
+            operationId: delete_ssh_key
+            summary: Delete SSH key
+            tags:
+                - Ssh
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/DeleteSSHKeyBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
         get:
             operationId: get_ssh_keys
             summary: Get all SSH keys
@@ -686,83 +906,21 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /security/ssh/{fingerprint}:
-        delete:
-            operationId: delete_ssh_key
-            summary: Delete SSH key
+    /security/ssh/users:
+        get:
+            operationId: get_ssh_users
+            summary: Get all users that can have SSH keys
             tags:
                 - Ssh
-            parameters:
-                - in: query
-                  name: fingerprint
-                  description: The fingerprint of the SSH key to delete.
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /settings:
-        get:
-            operationId: get_settings
-            summary: Get settings
-            tags:
-                - Settings
             responses:
                 "200":
-                    description: The settings.
+                    description: The list of users.
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Settings'
-        patch:
-            operationId: patch_settings
-            summary: Patch settings
-            tags:
-                - Settings
-            requestBody:
-                description: The settings to update.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Settings'
-            responses:
-                "200":
-                    $ref: '#/components/responses/200'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /update:
-        get:
-            operationId: get_updates
-            summary: Get the latest version info
-            tags:
-                - Updates
-            responses:
-                "200":
-                    description: The latest version information.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Update'
-                "500":
-                    $ref: '#/components/responses/500'
-        post:
-            operationId: install_update
-            summary: Install the latest version
-            tags:
-                - Updates
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "400":
-                    $ref: '#/components/responses/400'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
 components:
@@ -773,8 +931,16 @@ components:
             description: Created
         "204":
             description: No content
+        "304":
+            description: Not modified
         "400":
             description: Bad request
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "401":
+            description: Unauthorized
             content:
                 application/json:
                     schema:
@@ -816,6 +982,8 @@ components:
             properties:
                 authorized_key:
                     type: string
+                username:
+                    type: string
         Baseline:
             type: object
             properties:
@@ -830,6 +998,37 @@ components:
                 vertex_client:
                     type: string
                 vertex_services:
+                    type: string
+        CPU:
+            type: object
+            properties:
+                cache_size:
+                    type: int32
+                core_id:
+                    type: string
+                cores_count:
+                    type: int32
+                count:
+                    type: int32
+                family:
+                    type: string
+                flags:
+                    type: array
+                    items:
+                        type: string
+                mhz:
+                    type: float64
+                microcode:
+                    type: string
+                model:
+                    type: string
+                model_name:
+                    type: string
+                physical_id:
+                    type: string
+                stepping:
+                    type: int32
+                vendor_id:
                     type: string
         Container:
             type: object
@@ -863,9 +1062,6 @@ components:
                     type: string
         DB:
             type: object
-            properties:
-                name:
-                    type: string
         DBMS:
             type: object
             properties:
@@ -874,6 +1070,13 @@ components:
                     items:
                         $ref: '#/components/schemas/DB'
                 password:
+                    type: string
+                username:
+                    type: string
+        DeleteSSHKeyBody:
+            type: object
+            properties:
+                fingerprint:
                     type: string
                 username:
                     type: string
@@ -890,25 +1093,34 @@ components:
                     $ref: '#/components/schemas/ErrCode'
                 message:
                     type: string
-        Hardware:
-            type: object
-            properties:
-                dockerized:
-                    type: boolean
-                host:
-                    $ref: '#/components/schemas/Host'
         Host:
             type: object
             properties:
-                arch:
+                boot_time:
+                    type: uint64
+                host_id:
                     type: string
-                name:
+                hostname:
+                    type: string
+                kernel_arch:
+                    type: string
+                kernel_version:
                     type: string
                 os:
                     type: string
                 platform:
                     type: string
-                version:
+                platform_family:
+                    type: string
+                platform_version:
+                    type: string
+                procs:
+                    type: uint64
+                uptime:
+                    type: uint64
+                virtualization_role:
+                    type: string
+                virtualization_system:
                     type: string
         LogLine:
             type: object
@@ -928,6 +1140,8 @@ components:
                     type: string
                 description:
                     type: string
+                hidden:
+                    type: boolean
                 icon:
                     type: string
                 id:
@@ -936,6 +1150,11 @@ components:
                     type: string
         Metrics:
             type: string
+        MigrateToBody:
+            type: object
+            properties:
+                dbms:
+                    type: string
         PatchBody:
             type: object
             properties:
@@ -962,6 +1181,8 @@ components:
                     type: string
                 type:
                     type: string
+                username:
+                    type: string
         Redirect:
             type: string
         Service:
@@ -972,23 +1193,8 @@ components:
                 available:
                     type: boolean
         Settings:
-            type: object
-            properties:
-                notifications:
-                    $ref: '#/components/schemas/SettingsNotifications'
-                updates:
-                    $ref: '#/components/schemas/SettingsUpdates'
-        SettingsNotifications:
-            type: object
-            properties:
-                webhook:
-                    type: string
-        SettingsUpdates:
-            type: object
-            properties:
-                channel:
-                    $ref: '#/components/schemas/SettingsUpdatesChannel'
-        SettingsUpdatesChannel:
+            type: string
+        Token:
             type: string
         UUID:
             type: string
@@ -999,5 +1205,9 @@ components:
                     $ref: '#/components/schemas/Baseline'
                 updating:
                     type: boolean
+        User:
+            type: object
+        UserCredentials:
+            type: string
         object:
             type: string
