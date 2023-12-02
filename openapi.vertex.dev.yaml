@@ -120,6 +120,38 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
+    /app/admin/hardware/cpus:
+        get:
+            operationId: get_cpus
+            summary: Get CPUs
+            tags:
+                - Hardware
+            responses:
+                "200":
+                    description: The CPUs information.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/CPU'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/hardware/host:
+        get:
+            operationId: get_host
+            summary: Get host
+            tags:
+                - Hardware
+            responses:
+                "200":
+                    description: The host information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Host'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/auth/credentials:
         get:
             operationId: auth_get_current_user_credentials
@@ -819,38 +851,6 @@ paths:
             responses:
                 "204":
                     $ref: '#/components/responses/204'
-    /hardware/cpus:
-        get:
-            operationId: get_cpus
-            summary: Get CPUs
-            tags:
-                - Hardware
-            responses:
-                "200":
-                    description: The CPUs information.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/CPU'
-                "500":
-                    $ref: '#/components/responses/500'
-    /hardware/host:
-        get:
-            operationId: get_host
-            summary: Get host
-            tags:
-                - Hardware
-            responses:
-                "200":
-                    description: The host information.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Host'
-                "500":
-                    $ref: '#/components/responses/500'
     /security/ssh:
         delete:
             operationId: delete_ssh_key
