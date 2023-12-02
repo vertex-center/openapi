@@ -166,6 +166,22 @@ paths:
                                 $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
+        patch:
+            operationId: auth_patch_current_user
+            summary: Patch user
+            tags:
+                - Authentication/Users
+            responses:
+                "200":
+                    description: The user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/containers/container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
