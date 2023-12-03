@@ -23,7 +23,7 @@ paths:
             responses:
                 "200":
                     $ref: '#/components/responses/200'
-    /admin/db/dbms:
+    /app/admin/db/dbms:
         get:
             operationId: get_current_dbms
             summary: Get the current DBMS
@@ -55,67 +55,6 @@ paths:
                     $ref: '#/components/responses/204'
                 "304":
                     $ref: '#/components/responses/304'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /admin/settings:
-        get:
-            operationId: get_settings
-            summary: Get settings
-            tags:
-                - Settings
-            responses:
-                "200":
-                    description: The settings.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Settings'
-                "500":
-                    $ref: '#/components/responses/500'
-        patch:
-            operationId: patch_settings
-            summary: Patch settings
-            tags:
-                - Settings
-            requestBody:
-                description: The settings to update.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Settings'
-            responses:
-                "200":
-                    $ref: '#/components/responses/200'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
-    /admin/update:
-        get:
-            operationId: get_updates
-            summary: Get the latest version info
-            tags:
-                - Updates
-            responses:
-                "200":
-                    description: The latest version information.
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Update'
-                "500":
-                    $ref: '#/components/responses/500'
-        post:
-            operationId: install_update
-            summary: Install the latest version
-            tags:
-                - Updates
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
                 "400":
                     $ref: '#/components/responses/400'
                 "500":
@@ -161,6 +100,40 @@ paths:
             responses:
                 "204":
                     $ref: '#/components/responses/204'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/settings:
+        get:
+            operationId: get_settings
+            summary: Get settings
+            tags:
+                - Settings
+            responses:
+                "200":
+                    description: The settings.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Settings'
+                "500":
+                    $ref: '#/components/responses/500'
+        patch:
+            operationId: patch_settings
+            summary: Patch settings
+            tags:
+                - Settings
+            requestBody:
+                description: The settings to update.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Settings'
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "400":
+                    $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
     /app/admin/ssh:
@@ -233,6 +206,33 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/update:
+        get:
+            operationId: get_updates
+            summary: Get the latest version info
+            tags:
+                - Updates
+            responses:
+                "200":
+                    description: The latest version information.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Update'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: install_update
+            summary: Install the latest version
+            tags:
+                - Updates
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
     /app/auth/credentials:
