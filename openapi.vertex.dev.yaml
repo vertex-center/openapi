@@ -310,6 +310,56 @@ paths:
                                 $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
+    /app/auth/user/email:
+        delete:
+            operationId: auth_current_user_delete_email
+            summary: Delete email
+            tags:
+                - Authentication
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: auth_current_user_create_email
+            summary: Create email
+            tags:
+                - Authentication
+            responses:
+                "200":
+                    description: The email
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Email'
+                "400":
+                    $ref: '#/components/responses/400'
+                "409":
+                    description: Email already exists
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/user/emails:
+        get:
+            operationId: auth_current_user_get_emails
+            summary: Get emails
+            tags:
+                - Authentication
+            responses:
+                "200":
+                    description: The emails
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Email'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/containers/container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
@@ -1095,6 +1145,21 @@ components:
             type: object
             anyOf:
                 - type: object
+        Email:
+            type: object
+            properties:
+                created_at:
+                    type: int64
+                deleted_at:
+                    type: int64
+                email:
+                    type: string
+                id:
+                    type: uint
+                updated_at:
+                    type: int64
+                user_id:
+                    type: uint
         ErrCode:
             type: string
         Error:
