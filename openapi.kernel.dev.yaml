@@ -13,6 +13,17 @@ servers:
             default: "6131"
             description: The port of the server.
 paths:
+    /app/admin/hardware/reboot:
+        post:
+            operationId: reboot_kernel
+            summary: Reboot
+            tags:
+                - Apps/Admin/Hardware
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "500":
+                    $ref: '#/components/responses/500'
     /app/admin/ssh:
         delete:
             operationId: delete_ssh_key_kernel
