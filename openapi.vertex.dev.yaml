@@ -28,7 +28,7 @@ paths:
             operationId: get_current_dbms
             summary: Get the current DBMS
             tags:
-                - Admin/Data
+                - Apps/Admin/Database
             description: Get the current database management system that Vertex is using.
             responses:
                 "200":
@@ -41,7 +41,7 @@ paths:
             operationId: migrate_to_dbms
             summary: Migrate to a DBMS
             tags:
-                - Admin/Data
+                - Apps/Admin/Database
             description: Migrate Vertex to the given database management system.
             requestBody:
                 description: The DBMS to migrate to.
@@ -107,7 +107,7 @@ paths:
             operationId: get_settings
             summary: Get settings
             tags:
-                - Settings
+                - Apps/Admin/Settings
             responses:
                 "200":
                     description: The settings.
@@ -121,7 +121,7 @@ paths:
             operationId: patch_settings
             summary: Patch settings
             tags:
-                - Settings
+                - Apps/Admin/Settings
             requestBody:
                 description: The settings to update.
                 required: true
@@ -213,7 +213,7 @@ paths:
             operationId: get_updates
             summary: Get the latest version info
             tags:
-                - Updates
+                - Apps/Admin/Updates
             responses:
                 "200":
                     description: The latest version information.
@@ -227,7 +227,7 @@ paths:
             operationId: install_update
             summary: Install the latest version
             tags:
-                - Updates
+                - Apps/Admin/Updates
             responses:
                 "204":
                     $ref: '#/components/responses/204'
