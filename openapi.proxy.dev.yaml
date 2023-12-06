@@ -1,43 +1,73 @@
 openapi: 3.0.0
 info:
-    title: Vertex
-    description: A platform to manage your self-hosted server.
+    title: Vertex Reverse Proxy
+    description: A reverse proxy manager.
     version: 0.0.0
 servers:
-    - url: http://{ip}:{port}/api
+    - url: http://{ip}:{port-kernel}/api
       variables:
         ip:
             default: localhost
             description: The IP address of the server.
-        port:
-            default: "6130"
+        port-kernel:
+            default: "7508"
             description: The port of the server.
 paths:
-    /apps:
-        get:
-            operationId: get_apps
-            summary: Get all apps
+    /app/reverse-proxy/redirect:
+        post:
+            operationId: vx_reverse_proxy_add_redirect
+            summary: Add redirect
             tags:
-                - Apps
+                - Reverse Proxy
+            requestBody:
+                description: The redirect to add.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddRedirectBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/reverse-proxy/redirect/{id}:
+        delete:
+            operationId: vx_reverse_proxy_remove_redirect
+            summary: Remove redirect
+            tags:
+                - Reverse Proxy
+            parameters:
+                - in: query
+                  name: id
+                  description: The redirect UUID.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/reverse-proxy/redirects:
+        get:
+            operationId: vx_reverse_proxy_get_redirects
+            summary: Get redirects
+            tags:
+                - Reverse Proxy
             responses:
                 "200":
-                    description: The list of apps.
+                    description: The redirects.
                     content:
                         application/json:
                             schema:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/Meta'
-    /debug/hard-reset:
-        post:
-            operationId: hard_reset
-            summary: Hard reset
-            tags:
-                - Debug
-            description: This route allows deleting all the server data, which can be useful for debugging purposes.
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
+                                    $ref: '#/components/schemas/Redirect'
 components:
     responses:
         "200":
@@ -85,6 +115,13 @@ components:
                     schema:
                         $ref: '#/components/schemas/Error'
     schemas:
+        AddRedirectBody:
+            type: object
+            properties:
+                source:
+                    type: string
+                target:
+                    type: string
         ErrCode:
             type: string
         Error:
@@ -94,26 +131,5 @@ components:
                     $ref: '#/components/schemas/ErrCode'
                 message:
                     type: string
-        Meta:
-            type: object
-            properties:
-                category:
-                    type: string
-                dependencies:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Meta'
-                description:
-                    type: string
-                hidden:
-                    type: boolean
-                icon:
-                    type: string
-                id:
-                    type: string
-                kernel_port:
-                    type: string
-                name:
-                    type: string
-                port:
-                    type: string
+        Redirect:
+            type: string

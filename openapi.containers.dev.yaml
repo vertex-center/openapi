@@ -1,0 +1,540 @@
+openapi: 3.0.0
+info:
+    title: Vertex Containers
+    description: An app to manage Docker containers.
+    version: 0.0.0
+servers:
+    - url: http://{ip}:{port-kernel}/api
+      variables:
+        ip:
+            default: localhost
+            description: The IP address of the server.
+        port-kernel:
+            default: "7504"
+            description: The port of the server.
+paths:
+    /app/containers/container/{container_uuid}:
+        delete:
+            operationId: vx_containers_delete_container
+            summary: Delete a container
+            tags:
+                - Containers
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "409":
+                    description: The container is still running.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    $ref: '#/components/responses/500'
+        get:
+            operationId: vx_containers_get_container
+            summary: Get a container
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The container.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Container'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+        patch:
+            operationId: vx_containers_patch_container
+            summary: Patch a container
+            tags:
+                - Containers
+            requestBody:
+                description: The container patch.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/docker:
+        get:
+            operationId: vx_containers_get_docker
+            summary: Get Docker container info
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The Docker container info.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DockerContainerInfo'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/docker/recreate:
+        post:
+            operationId: vx_containers_recreate_docker
+            summary: Recreate Docker container
+            tags:
+                - Containers
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/environment:
+        patch:
+            operationId: vx_containers_patch_environment
+            summary: Patch a container environment
+            tags:
+                - Containers
+            requestBody:
+                description: The environment variables to set.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchEnvironmentBody'
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/events:
+        get:
+            operationId: vx_containers_events_container
+            summary: Get container events
+            tags:
+                - Containers
+            description: Get events for a container, sent as Server-Sent Events (SSE).
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/logs:
+        get:
+            operationId: vx_containers_get_logs
+            summary: Get container logs
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The logs.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/LogLine'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/start:
+        post:
+            operationId: vx_containers_start_container
+            summary: Start a container
+            tags:
+                - Containers
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "409":
+                    description: The container is already running.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/stop:
+        post:
+            operationId: vx_containers_stop_container
+            summary: Stop a container
+            tags:
+                - Containers
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "409":
+                    description: The container is not running.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/update/service:
+        post:
+            operationId: vx_containers_update_service
+            summary: Update service
+            tags:
+                - Containers
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/versions:
+        get:
+            operationId: vx_containers_get_versions
+            summary: Get container versions
+            tags:
+                - Containers
+            parameters:
+                - in: query
+                  name: reload
+                  description: Whether to reload the versions from the registry or use the cache.
+                  required: true
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: The versions.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/container/{container_uuid}/wait:
+        get:
+            operationId: vx_containers_wait_status
+            summary: Wait for a status change
+            tags:
+                - Containers
+            parameters:
+                - in: query
+                  name: status
+                  description: The status to wait for.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/containers:
+        get:
+            operationId: vx_containers_get_containers
+            summary: Get containers
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The containers.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Container'
+    /app/containers/containers/checkupdates:
+        get:
+            operationId: vx_containers_check_updates
+            summary: Check for updates
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The containers.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Container'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/containers/events:
+        get:
+            operationId: vx_containers_events
+            summary: Get events
+            tags:
+                - Containers
+            description: Get events for containers, sent as Server-Sent Events (SSE).
+            responses:
+                "200":
+                    $ref: '#/components/responses/200'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/containers/search:
+        get:
+            operationId: vx_containers_search
+            summary: Search containers
+            tags:
+                - Containers
+            parameters:
+                - in: query
+                  name: features
+                  description: The features.
+                  required: true
+                  schema:
+                    type: array
+                    items:
+                        type: string
+                - in: query
+                  name: tags
+                  description: The tags.
+                  required: true
+                  schema:
+                    type: array
+                    items:
+                        type: string
+            responses:
+                "200":
+                    description: The containers.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Container'
+    /app/containers/containers/tags:
+        get:
+            operationId: vx_containers_get_tags
+            summary: Get tags
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The tags.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+    /app/containers/service/{service_id}:
+        get:
+            operationId: vx_containers_get_service
+            summary: Get service
+            tags:
+                - Containers
+            parameters:
+                - in: query
+                  name: service_id
+                  description: The service ID.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: The service.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Service'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+    /app/containers/service/{service_id}/install:
+        post:
+            operationId: vx_containers_install_service
+            summary: Install a service
+            tags:
+                - Containers
+            parameters:
+                - in: query
+                  name: service_id
+                  description: The service ID.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: The container.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Container'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/containers/services:
+        get:
+            operationId: vx_containers_get_services
+            summary: Get services
+            tags:
+                - Containers
+            responses:
+                "200":
+                    description: The services.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Service'
+components:
+    responses:
+        "200":
+            description: Success
+        "201":
+            description: Created
+        "204":
+            description: No content
+        "304":
+            description: Not modified
+        "400":
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "401":
+            description: Unauthorized
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "404":
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "409":
+            description: Conflict
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "422":
+            description: Unprocessable entity
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "500":
+            description: Internal error
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+    schemas:
+        Container:
+            type: object
+            properties:
+                cache_versions:
+                    type: array
+                    items:
+                        type: string
+                environment:
+                    $ref: '#/components/schemas/ContainerEnvVariables'
+                service:
+                    $ref: '#/components/schemas/Service'
+                service_update:
+                    $ref: '#/components/schemas/ServiceUpdate'
+                status:
+                    type: string
+                update:
+                    $ref: '#/components/schemas/ContainerUpdate'
+                uuid:
+                    $ref: '#/components/schemas/UUID'
+        ContainerEnvVariables:
+            type: object
+            anyOf:
+                - type: string
+        ContainerUpdate:
+            type: object
+            properties:
+                current_version:
+                    type: string
+                latest_version:
+                    type: string
+        DockerContainerInfo:
+            type: object
+            anyOf:
+                - type: object
+        ErrCode:
+            type: string
+        Error:
+            type: object
+            properties:
+                code:
+                    $ref: '#/components/schemas/ErrCode'
+                message:
+                    type: string
+        LogLine:
+            type: object
+            properties:
+                id:
+                    type: int
+                kind:
+                    type: string
+                message:
+                    $ref: '#/components/schemas/LogLineMessage'
+        LogLineMessage:
+            type: string
+        PatchBody:
+            type: object
+            properties:
+                databases:
+                    $ref: '#/components/schemas/object'
+                display_name:
+                    type: string
+                launch_on_startup:
+                    type: boolean
+                tags:
+                    type: array
+                    items:
+                        type: string
+                version:
+                    type: string
+        PatchEnvironmentBody:
+            type: object
+            anyOf:
+                - type: string
+        Service:
+            type: object
+        ServiceUpdate:
+            type: object
+            properties:
+                available:
+                    type: boolean
+        UUID:
+            type: string
+        object:
+            type: string

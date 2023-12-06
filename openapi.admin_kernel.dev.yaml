@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+    title: Vertex Admin Kernel
+    description: Retrieve the logged-in user credentials
+    version: 0.0.0
+servers:
+    - url: http://{ip}:{port-kernel}/api
+      variables:
+        ip:
+            default: localhost
+            description: The IP address of the server.
+        port-kernel:
+            default: "7501"
+            description: The port of the server.
+paths:
+    /app/admin/hardware/reboot:
+        post:
+            operationId: reboot_kernel
+            summary: Reboot
+            tags:
+                - Hardware
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/ssh:
+        delete:
+            operationId: delete_ssh_key_kernel
+            summary: Delete an SSH key from the authorized_keys file
+            tags:
+                - SSH
+            parameters:
+                - in: query
+                  name: fingerprint
+                  description: The fingerprint of the SSH key to delete.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "204":
+                    $ref: '#/components/responses/204'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+        get:
+            operationId: get_ssh_keys_kernel
+            summary: Get all SSH keys
+            tags:
+                - SSH
+            responses:
+                "200":
+                    description: The list of SSH keys.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PublicKey'
+                "500":
+                    $ref: '#/components/responses/500'
+        post:
+            operationId: add_ssh_key_kernel
+            summary: Add an SSH key to the authorized_keys file
+            tags:
+                - SSH
+            requestBody:
+                description: Info about the key to append to the authorized_keys file.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddSSHKeyBody'
+            responses:
+                "201":
+                    $ref: '#/components/responses/201'
+                "400":
+                    $ref: '#/components/responses/400'
+                "404":
+                    $ref: '#/components/responses/404'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/admin/ssh/users:
+        get:
+            operationId: get_ssh_users_kernel
+            summary: Get all users that can have SSH keys
+            tags:
+                - SSH
+            responses:
+                "200":
+                    description: The list of users.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                "500":
+                    $ref: '#/components/responses/500'
+components:
+    responses:
+        "200":
+            description: Success
+        "201":
+            description: Created
+        "204":
+            description: No content
+        "304":
+            description: Not modified
+        "400":
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "401":
+            description: Unauthorized
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "404":
+            description: Resource not found
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "409":
+            description: Conflict
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "422":
+            description: Unprocessable entity
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        "500":
+            description: Internal error
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+    schemas:
+        AddSSHKeyBody:
+            type: object
+            properties:
+                authorized_key:
+                    type: string
+                username:
+                    type: string
+        ErrCode:
+            type: string
+        Error:
+            type: object
+            properties:
+                code:
+                    $ref: '#/components/schemas/ErrCode'
+                message:
+                    type: string
+        PublicKey:
+            type: object
+            properties:
+                fingerprint_sha_256:
+                    type: string
+                type:
+                    type: string
+                username:
+                    type: string
+        User:
+            type: object
