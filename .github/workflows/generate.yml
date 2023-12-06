@@ -62,7 +62,6 @@ jobs:
             rm openapi/${{ steps.setup-variables.outputs.PATH }}
           fi
           cp docapi/openapi.vertex.yaml openapi/openapi.vertex.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.kernel.yaml openapi/openapi.kernel.${{ steps.setup-variables.outputs.PATH }}
           cp docapi/openapi.admin.yaml openapi/openapi.admin.${{ steps.setup-variables.outputs.PATH }}
           cp docapi/openapi.admin_kernel.yaml openapi/openapi.admin_kernel.${{ steps.setup-variables.outputs.PATH }}
           cp docapi/openapi.auth.yaml openapi/openapi.auth.${{ steps.setup-variables.outputs.PATH }}
