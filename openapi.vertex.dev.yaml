@@ -23,42 +23,6 @@ paths:
             responses:
                 "200":
                     $ref: '#/components/responses/200'
-    /app/admin/db/dbms:
-        get:
-            operationId: get_current_dbms
-            summary: Get the current DBMS
-            tags:
-                - Apps/Admin/Database
-            description: Get the current database management system that Vertex is using.
-            responses:
-                "200":
-                    description: The current DBMS.
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-        post:
-            operationId: migrate_to_dbms
-            summary: Migrate to a DBMS
-            tags:
-                - Apps/Admin/Database
-            description: Migrate Vertex to the given database management system.
-            requestBody:
-                description: The DBMS to migrate to.
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MigrateToBody'
-            responses:
-                "204":
-                    $ref: '#/components/responses/204'
-                "304":
-                    $ref: '#/components/responses/304'
-                "400":
-                    $ref: '#/components/responses/400'
-                "500":
-                    $ref: '#/components/responses/500'
     /app/admin/hardware/cpus:
         get:
             operationId: get_cpus
@@ -358,6 +322,23 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Email'
+                "500":
+                    $ref: '#/components/responses/500'
+    /app/auth/verify:
+        post:
+            operationId: auth_verify
+            summary: Verify
+            tags:
+                - Authentication
+            responses:
+                "200":
+                    description: The auth token
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Token'
+                "400":
+                    $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
     /app/containers/container/{container_uuid}:
@@ -1214,6 +1195,10 @@ components:
             properties:
                 category:
                     type: string
+                dependencies:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Meta'
                 description:
                     type: string
                 hidden:
@@ -1222,15 +1207,14 @@ components:
                     type: string
                 id:
                     type: string
+                kernel_port:
+                    type: string
                 name:
+                    type: string
+                port:
                     type: string
         Metrics:
             type: string
-        MigrateToBody:
-            type: object
-            properties:
-                dbms:
-                    type: string
         PatchBody:
             type: object
             properties:
