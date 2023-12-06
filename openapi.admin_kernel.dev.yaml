@@ -13,7 +13,7 @@ servers:
             default: "7501"
             description: The port of the server.
 paths:
-    /app/admin/hardware/reboot:
+    /hardware/reboot:
         post:
             operationId: reboot_kernel
             summary: Reboot
@@ -24,7 +24,7 @@ paths:
                     $ref: '#/components/responses/204'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/ssh:
+    /ssh:
         delete:
             operationId: delete_ssh_key_kernel
             summary: Delete an SSH key from the authorized_keys file
@@ -83,7 +83,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/ssh/users:
+    /ssh/users:
         get:
             operationId: get_ssh_users_kernel
             summary: Get all users that can have SSH keys

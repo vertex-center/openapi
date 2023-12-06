@@ -13,7 +13,7 @@ servers:
             default: "7510"
             description: The port of the server.
 paths:
-    /app/devtools-service-editor/editor/to-yaml:
+    /editor/to-yaml:
         post:
             operationId: vx_devtools_service_editor_to_yaml
             summary: Convert service to yaml

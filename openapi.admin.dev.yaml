@@ -23,7 +23,7 @@ paths:
             responses:
                 "200":
                     $ref: '#/components/responses/200'
-    /app/admin/hardware/cpus:
+    /hardware/cpus:
         get:
             operationId: get_cpus
             summary: Get CPUs
@@ -40,7 +40,7 @@ paths:
                                     $ref: '#/components/schemas/CPU'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/hardware/host:
+    /hardware/host:
         get:
             operationId: get_host
             summary: Get host
@@ -55,7 +55,7 @@ paths:
                                 $ref: '#/components/schemas/Host'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/hardware/reboot:
+    /hardware/reboot:
         post:
             operationId: reboot
             summary: Reboot
@@ -66,7 +66,7 @@ paths:
                     $ref: '#/components/responses/204'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/settings:
+    /settings:
         get:
             operationId: get_settings
             summary: Get settings
@@ -100,7 +100,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/ssh:
+    /ssh:
         delete:
             operationId: delete_ssh_key
             summary: Delete SSH key
@@ -155,7 +155,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/ssh/users:
+    /ssh/users:
         get:
             operationId: get_ssh_users
             summary: Get all users that can have SSH keys
@@ -172,7 +172,7 @@ paths:
                                     $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/admin/update:
+    /update:
         get:
             operationId: get_updates
             summary: Get the latest version info

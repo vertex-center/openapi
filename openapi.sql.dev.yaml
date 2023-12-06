@@ -13,7 +13,7 @@ servers:
             default: "7512"
             description: The port of the server.
 paths:
-    /app/sql/container/{container_uuid}:
+    /container/{container_uuid}:
         get:
             operationId: vx_sql_get_dbms
             summary: Get an installed DBMS
@@ -39,7 +39,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/sql/dbms/{dbms}/install:
+    /dbms/{dbms}/install:
         post:
             operationId: vx_sql_install_dbms
             summary: Install a DBMS

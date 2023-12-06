@@ -13,7 +13,7 @@ servers:
             default: "7506"
             description: The port of the server.
 paths:
-    /app/monitoring/collector/{collector}/install:
+    /collector/{collector}/install:
         post:
             operationId: vx_monitoring_install_collector
             summary: Install a collector
@@ -35,7 +35,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/monitoring/metrics:
+    /metrics:
         get:
             operationId: vx_monitoring_get_metrics
             summary: Get metrics
@@ -48,7 +48,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Metrics'
-    /app/monitoring/visualizer/{visualizer}/install:
+    /visualizer/{visualizer}/install:
         post:
             operationId: vx_monitoring_install_visualizer
             summary: Install a visualizer

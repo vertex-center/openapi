@@ -13,7 +13,7 @@ servers:
             default: "7504"
             description: The port of the server.
 paths:
-    /app/containers/container/{container_uuid}:
+    /container/{container_uuid}:
         delete:
             operationId: vx_containers_delete_container
             summary: Delete a container
@@ -69,7 +69,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/docker:
+    /container/{container_uuid}/docker:
         get:
             operationId: vx_containers_get_docker
             summary: Get Docker container info
@@ -86,7 +86,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/docker/recreate:
+    /container/{container_uuid}/docker/recreate:
         post:
             operationId: vx_containers_recreate_docker
             summary: Recreate Docker container
@@ -99,7 +99,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/environment:
+    /container/{container_uuid}/environment:
         patch:
             operationId: vx_containers_patch_environment
             summary: Patch a container environment
@@ -121,7 +121,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/events:
+    /container/{container_uuid}/events:
         get:
             operationId: vx_containers_events_container
             summary: Get container events
@@ -135,7 +135,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/logs:
+    /container/{container_uuid}/logs:
         get:
             operationId: vx_containers_get_logs
             summary: Get container logs
@@ -154,7 +154,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/start:
+    /container/{container_uuid}/start:
         post:
             operationId: vx_containers_start_container
             summary: Start a container
@@ -173,7 +173,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/stop:
+    /container/{container_uuid}/stop:
         post:
             operationId: vx_containers_stop_container
             summary: Stop a container
@@ -192,7 +192,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/update/service:
+    /container/{container_uuid}/update/service:
         post:
             operationId: vx_containers_update_service
             summary: Update service
@@ -205,7 +205,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/versions:
+    /container/{container_uuid}/versions:
         get:
             operationId: vx_containers_get_versions
             summary: Get container versions
@@ -231,7 +231,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/container/{container_uuid}/wait:
+    /container/{container_uuid}/wait:
         get:
             operationId: vx_containers_wait_status
             summary: Wait for a status change
@@ -251,7 +251,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/containers:
+    /containers:
         get:
             operationId: vx_containers_get_containers
             summary: Get containers
@@ -266,7 +266,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Container'
-    /app/containers/containers/checkupdates:
+    /containers/checkupdates:
         get:
             operationId: vx_containers_check_updates
             summary: Check for updates
@@ -283,7 +283,7 @@ paths:
                                     $ref: '#/components/schemas/Container'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/containers/events:
+    /containers/events:
         get:
             operationId: vx_containers_events
             summary: Get events
@@ -295,7 +295,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/containers/search:
+    /containers/search:
         get:
             operationId: vx_containers_search
             summary: Search containers
@@ -327,7 +327,7 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Container'
-    /app/containers/containers/tags:
+    /containers/tags:
         get:
             operationId: vx_containers_get_tags
             summary: Get tags
@@ -342,7 +342,7 @@ paths:
                                 type: array
                                 items:
                                     type: string
-    /app/containers/service/{service_id}:
+    /service/{service_id}:
         get:
             operationId: vx_containers_get_service
             summary: Get service
@@ -366,7 +366,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "404":
                     $ref: '#/components/responses/404'
-    /app/containers/service/{service_id}/install:
+    /service/{service_id}/install:
         post:
             operationId: vx_containers_install_service
             summary: Install a service
@@ -392,7 +392,7 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/services:
+    /services:
         get:
             operationId: vx_containers_get_services
             summary: Get services

@@ -13,7 +13,7 @@ servers:
             default: "7505"
             description: The port of the server.
 paths:
-    /app/containers/docker/containers:
+    /docker/containers:
         get:
             operationId: vx_containers_kernel_get_containers
             summary: Get containers
@@ -50,7 +50,7 @@ paths:
                                 $ref: '#/components/schemas/Container'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}:
+    /docker/containers/{id}:
         delete:
             operationId: vx_containers_kernel_delete_container
             summary: Delete container
@@ -70,10 +70,10 @@ paths:
                     $ref: '#/components/responses/404'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}/info:
+    /docker/containers/{id}/info:
         "":
             responses: {}
-    /app/containers/docker/containers/{id}/logs/stderr:
+    /docker/containers/{id}/logs/stderr:
         get:
             operationId: vx_containers_kernel_logs_stderr_container
             summary: Get container stderr logs
@@ -92,7 +92,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}/logs/stdout:
+    /docker/containers/{id}/logs/stdout:
         get:
             operationId: vx_containers_kernel_logs_stdout_container
             summary: Get container stdout logs
@@ -111,7 +111,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}/start:
+    /docker/containers/{id}/start:
         post:
             operationId: vx_containers_kernel_start_container
             summary: Start container
@@ -129,7 +129,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}/stop:
+    /docker/containers/{id}/stop:
         post:
             operationId: vx_containers_kernel_stop_container
             summary: Stop container
@@ -147,7 +147,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/{id}/wait/{cond}:
+    /docker/containers/{id}/wait/{cond}:
         get:
             operationId: vx_containers_kernel_wait_container
             summary: Wait container
@@ -171,7 +171,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/containers/mounts/{id}:
+    /docker/containers/mounts/{id}:
         delete:
             operationId: vx_containers_kernel_delete_mounts
             summary: Delete mounts
@@ -189,7 +189,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/image/{id}/info:
+    /docker/image/{id}/info:
         get:
             operationId: vx_containers_kernel_info_image
             summary: Get image info
@@ -211,7 +211,7 @@ paths:
                                 $ref: '#/components/schemas/InfoImageResponse'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/image/build:
+    /docker/image/build:
         post:
             operationId: vx_containers_kernel_build_image
             summary: Build image
@@ -230,7 +230,7 @@ paths:
                     $ref: '#/components/responses/200'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/containers/docker/image/pull:
+    /docker/image/pull:
         post:
             operationId: vx_containers_kernel_pull_image
             summary: Pull image

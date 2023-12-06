@@ -13,7 +13,7 @@ servers:
             default: "7502"
             description: The port of the server.
 paths:
-    /app/auth/credentials:
+    /credentials:
         get:
             operationId: auth_get_current_user_credentials
             summary: Get user credentials
@@ -28,7 +28,7 @@ paths:
                                 $ref: '#/components/schemas/UserCredentials'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/login:
+    /login:
         post:
             operationId: auth_login
             summary: Login
@@ -45,7 +45,7 @@ paths:
                     $ref: '#/components/responses/400'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/logout:
+    /logout:
         post:
             operationId: auth_logout
             summary: Logout
@@ -56,10 +56,10 @@ paths:
                     $ref: '#/components/responses/204'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/register:
+    /register:
         post:
             responses: {}
-    /app/auth/user:
+    /user:
         get:
             operationId: auth_get_current_user
             summary: Get user
@@ -88,7 +88,7 @@ paths:
                                 $ref: '#/components/schemas/User'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/user/email:
+    /user/email:
         delete:
             operationId: auth_current_user_delete_email
             summary: Delete email
@@ -121,7 +121,7 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/user/emails:
+    /user/emails:
         get:
             operationId: auth_current_user_get_emails
             summary: Get emails
@@ -138,7 +138,7 @@ paths:
                                     $ref: '#/components/schemas/Email'
                 "500":
                     $ref: '#/components/responses/500'
-    /app/auth/verify:
+    /verify:
         post:
             operationId: auth_verify
             summary: Verify
