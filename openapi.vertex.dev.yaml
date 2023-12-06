@@ -99,10 +99,6 @@ components:
             properties:
                 category:
                     type: string
-                dependencies:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Meta'
                 description:
                     type: string
                 hidden:
