@@ -1,0 +1,102 @@
+openapi: 3.0.1
+info:
+    title: Vertex Admin
+    description: Administer Vertex
+    version: ""
+paths:
+    /api/hardware/reboot:
+        post:
+            tags:
+                - Hardware
+            summary: Reboot
+            description: Reboot the host.
+            operationId: reboot
+            responses:
+                "200":
+                    description: OK
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: func1
+            responses:
+                "200":
+                    description: OK
+    /api/ssh:
+        get:
+            tags:
+                - SSH
+            summary: Get all SSH keys
+            operationId: getSSHKeys
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesPublicKey'
+        post:
+            tags:
+                - SSH
+            summary: Add an SSH key to the authorized_keys file
+            operationId: addSSHKey
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AddSSHKeyInput'
+            responses:
+                "200":
+                    description: OK
+        delete:
+            tags:
+                - SSH
+            summary: Delete an SSH key from the authorized_keys file
+            operationId: deleteSSHKey
+            responses:
+                "200":
+                    description: OK
+    /api/ssh/users:
+        get:
+            tags:
+                - SSH
+            summary: Get all users that can have SSH keys
+            operationId: getSSHUsers
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/UserUser'
+components:
+    schemas:
+        AddSSHKeyInput:
+            type: object
+            properties:
+                authorized_key:
+                    type: string
+                username:
+                    type: string
+        TypesPublicKey:
+            type: object
+            properties:
+                fingerprint_sha_256:
+                    type: string
+                type:
+                    type: string
+                username:
+                    type: string
+        UserUser:
+            type: object
+            properties:
+                HomeDir:
+                    type: string
+                Name:
+                    type: string
+tags:
+    - name: Hardware
+    - name: SSH

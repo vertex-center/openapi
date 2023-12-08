@@ -1,0 +1,69 @@
+openapi: 3.0.1
+info:
+    title: Vertex Monitoring
+    description: Create and manage containers.
+    version: ""
+paths:
+    /api/collector/{collector}/install:
+        post:
+            summary: Install a collector
+            operationId: installCollector
+            parameters:
+                - name: collector
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+    /api/metrics:
+        get:
+            summary: Get metrics
+            operationId: getMetrics
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesMetric'
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: func1
+            responses:
+                "200":
+                    description: OK
+    /api/visualizer/{visualizer}/install:
+        post:
+            summary: Install a visualizer
+            operationId: installVisualizer
+            parameters:
+                - name: visualizer
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+components:
+    schemas:
+        TypesMetric:
+            type: object
+            properties:
+                description:
+                    type: string
+                id:
+                    type: string
+                labels:
+                    type: array
+                    items:
+                        type: string
+                name:
+                    type: string
+                type:
+                    type: string

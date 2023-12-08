@@ -1,0 +1,656 @@
+openapi: 3.0.1
+info:
+    title: Vertex Containers
+    description: Create and manage containers.
+    version: ""
+paths:
+    /api/container/{container_uuid}:
+        get:
+            tags:
+                - Container
+            summary: Get a container
+            operationId: getContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesContainer'
+        delete:
+            tags:
+                - Container
+            summary: Delete a container
+            operationId: deleteContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+        patch:
+            tags:
+                - Container
+            summary: Patch a container
+            operationId: patchContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchContainerInput'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/docker:
+        get:
+            tags:
+                - Container
+            summary: Get Docker container info
+            operationId: getDockerContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                additionalProperties: {}
+    /api/container/{container_uuid}/docker/recreate:
+        post:
+            tags:
+                - Container
+            summary: Recreate Docker container
+            operationId: recreateDockerContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/environment:
+        patch:
+            tags:
+                - Container
+            summary: Patch a container environment
+            operationId: patchContainerEnvironment
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchContainerEnvironmentInput'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/events:
+        get:
+            tags:
+                - Container
+            summary: Get container events
+            description: Get events for a container, sent as Server-Sent Events (SSE).
+            operationId: eventsContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/logs:
+        get:
+            tags:
+                - Container
+            summary: Get container logs
+            operationId: getContainerLogs
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesLogLine'
+    /api/container/{container_uuid}/start:
+        post:
+            tags:
+                - Container
+            summary: Start a container
+            operationId: startContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/stop:
+        post:
+            tags:
+                - Container
+            summary: Stop a container
+            operationId: stopContainer
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/update/service:
+        post:
+            tags:
+                - Container
+            summary: Update service
+            operationId: updateService
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/container/{container_uuid}/versions:
+        get:
+            tags:
+                - Container
+            summary: Get container versions
+            operationId: getContainerVersions
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+    /api/container/{container_uuid}/wait:
+        get:
+            tags:
+                - Container
+            summary: Wait for a status change
+            operationId: waitContainerStatus
+            parameters:
+                - name: container_uuid
+                  in: path
+                  required: true
+                  schema:
+                    $ref: '#/components/schemas/UuidNullUUID'
+            responses:
+                "200":
+                    description: OK
+    /api/containers:
+        get:
+            tags:
+                - Containers
+            summary: Get containers
+            operationId: getContainers
+            responses:
+                "200":
+                    description: OK
+    /api/containers/checkupdates:
+        get:
+            tags:
+                - Containers
+            summary: Check for updates
+            operationId: checkForUpdates
+            responses:
+                "200":
+                    description: OK
+    /api/containers/events:
+        get:
+            tags:
+                - Containers
+            summary: Get events
+            operationId: events
+            responses:
+                "200":
+                    description: OK
+    /api/containers/search:
+        get:
+            tags:
+                - Containers
+            summary: Search containers
+            operationId: searchContainers
+            responses:
+                "200":
+                    description: OK
+    /api/containers/tags:
+        get:
+            tags:
+                - Containers
+            summary: Get tags
+            operationId: getTags
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: func1
+            responses:
+                "200":
+                    description: OK
+    /api/service/{service_id}:
+        get:
+            tags:
+                - Service
+            summary: Get service
+            operationId: getService
+            parameters:
+                - name: service_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesService'
+    /api/service/{service_id}/install:
+        post:
+            tags:
+                - Service
+            summary: Install service
+            operationId: installService
+            parameters:
+                - name: service_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesContainer'
+    /api/services:
+        get:
+            tags:
+                - Services
+            summary: Get services
+            operationId: getServices
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesService'
+components:
+    schemas:
+        HandlerPatchBodyDatabase:
+            type: object
+            properties:
+                container_id:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                    maxItems: 16
+                    minItems: 16
+                db_name:
+                    type: string
+                    nullable: true
+        PatchContainerEnvironmentInput:
+            type: object
+            properties:
+                Env:
+                    type: object
+                    additionalProperties:
+                        type: string
+        PatchContainerInput:
+            type: object
+            properties:
+                databases:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/HandlerPatchBodyDatabase'
+                display_name:
+                    type: string
+                    nullable: true
+                launch_on_startup:
+                    type: boolean
+                    nullable: true
+                tags:
+                    type: array
+                    items:
+                        type: string
+                version:
+                    type: string
+                    nullable: true
+        TypesContainer:
+            type: object
+            properties:
+                cache_versions:
+                    type: array
+                    items:
+                        type: string
+                databases:
+                    type: object
+                    additionalProperties:
+                        type: array
+                        items:
+                            type: integer
+                            format: int32
+                        maxItems: 16
+                        minItems: 16
+                display_name:
+                    type: string
+                environment:
+                    type: object
+                    additionalProperties:
+                        type: string
+                install_method:
+                    type: string
+                    nullable: true
+                launch_on_startup:
+                    type: boolean
+                    nullable: true
+                service:
+                    $ref: '#/components/schemas/TypesService'
+                service_update:
+                    $ref: '#/components/schemas/TypesServiceUpdate'
+                status:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+                update:
+                    $ref: '#/components/schemas/TypesContainerUpdate'
+                uuid:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                    maxItems: 16
+                    minItems: 16
+                version:
+                    type: string
+                    nullable: true
+        TypesContainerUpdate:
+            type: object
+            properties:
+                current_version:
+                    type: string
+                latest_version:
+                    type: string
+        TypesDatabaseEnvironment:
+            type: object
+            properties:
+                display_name:
+                    type: string
+                names:
+                    $ref: '#/components/schemas/TypesDatabaseEnvironmentNames'
+                types:
+                    type: array
+                    items:
+                        type: string
+        TypesDatabaseEnvironmentNames:
+            type: object
+            properties:
+                database:
+                    type: string
+                host:
+                    type: string
+                password:
+                    type: string
+                port:
+                    type: string
+                username:
+                    type: string
+        TypesDatabaseFeature:
+            type: object
+            properties:
+                category:
+                    type: string
+                database_default:
+                    type: string
+                    nullable: true
+                password:
+                    type: string
+                    nullable: true
+                port:
+                    type: string
+                type:
+                    type: string
+                username:
+                    type: string
+                    nullable: true
+        TypesFeatures:
+            type: object
+            properties:
+                databases:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesDatabaseFeature'
+        TypesLogLine:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: int32
+                kind:
+                    type: string
+        TypesService:
+            type: object
+            properties:
+                color:
+                    type: string
+                    nullable: true
+                databases:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/TypesDatabaseEnvironment'
+                description:
+                    type: string
+                environment:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesServiceEnv'
+                features:
+                    $ref: '#/components/schemas/TypesFeatures'
+                icon:
+                    type: string
+                    nullable: true
+                id:
+                    type: string
+                methods:
+                    $ref: '#/components/schemas/TypesServiceMethods'
+                name:
+                    type: string
+                repository:
+                    type: string
+                    nullable: true
+                urls:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesURL'
+                version:
+                    type: integer
+                    format: int32
+        TypesServiceClone:
+            type: object
+            properties:
+                repository:
+                    type: string
+        TypesServiceDependency:
+            type: object
+        TypesServiceEnv:
+            type: object
+            properties:
+                default:
+                    type: string
+                description:
+                    type: string
+                display_name:
+                    type: string
+                name:
+                    type: string
+                secret:
+                    type: boolean
+                    nullable: true
+                type:
+                    type: string
+        TypesServiceMethodDocker:
+            type: object
+            properties:
+                capabilities:
+                    type: array
+                    items:
+                        type: string
+                clone:
+                    $ref: '#/components/schemas/TypesServiceClone'
+                command:
+                    type: string
+                    nullable: true
+                dockerfile:
+                    type: string
+                    nullable: true
+                environment:
+                    type: object
+                    additionalProperties:
+                        type: string
+                image:
+                    type: string
+                    nullable: true
+                ports:
+                    type: object
+                    additionalProperties:
+                        type: string
+                sysctls:
+                    type: object
+                    additionalProperties:
+                        type: string
+                volumes:
+                    type: object
+                    additionalProperties:
+                        type: string
+        TypesServiceMethodRelease:
+            type: object
+            properties:
+                dependencies:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/TypesServiceDependency'
+        TypesServiceMethodScript:
+            type: object
+            properties:
+                clone:
+                    $ref: '#/components/schemas/TypesServiceClone'
+                dependencies:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/TypesServiceDependency'
+                file:
+                    type: string
+        TypesServiceMethods:
+            type: object
+            properties:
+                docker:
+                    $ref: '#/components/schemas/TypesServiceMethodDocker'
+                release:
+                    $ref: '#/components/schemas/TypesServiceMethodRelease'
+                script:
+                    $ref: '#/components/schemas/TypesServiceMethodScript'
+        TypesServiceUpdate:
+            type: object
+            properties:
+                available:
+                    type: boolean
+        TypesURL:
+            type: object
+            properties:
+                home:
+                    type: string
+                    nullable: true
+                kind:
+                    type: string
+                name:
+                    type: string
+                ping:
+                    type: string
+                    nullable: true
+                port:
+                    type: string
+        UuidNullUUID:
+            type: object
+            properties:
+                UUID:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                    maxItems: 16
+                    minItems: 16
+                Valid:
+                    type: boolean
+tags:
+    - name: Container
+    - name: Containers
+    - name: Service
+    - name: Services

@@ -1,0 +1,247 @@
+openapi: 3.0.1
+info:
+    title: Vertex Auth
+    description: Authentication app for Vertex
+    version: ""
+paths:
+    /api/login:
+        post:
+            summary: Login
+            description: Login with username and password
+            operationId: login
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesSession'
+    /api/logout:
+        post:
+            summary: Logout
+            description: Logout a user
+            operationId: logout
+            responses:
+                "200":
+                    description: OK
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: func1
+            responses:
+                "200":
+                    description: OK
+    /api/register:
+        post:
+            summary: Register
+            description: Register a new user with username and password
+            operationId: register
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesSession'
+    /api/user:
+        get:
+            tags:
+                - User
+            summary: Get user
+            description: Retrieve the logged-in user
+            operationId: getCurrentUser
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesUser'
+        patch:
+            tags:
+                - User
+            summary: Patch user
+            description: Update the logged-in user
+            operationId: patchCurrentUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchCurrentUserInput'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesUser'
+    /api/user/credentials:
+        get:
+            tags:
+                - User
+            summary: Get user credentials
+            description: Retrieve the logged-in user credentials
+            operationId: getCurrentUserCredentials
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesCredentialsMethods'
+    /api/user/email:
+        post:
+            tags:
+                - Email
+            summary: Create email
+            description: Create a new email for the logged-in user
+            operationId: createCurrentUserEmail
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCurrentUserEmailInput'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesEmail'
+        delete:
+            tags:
+                - Email
+            summary: Delete email
+            description: Delete an email from the logged-in user
+            operationId: deleteCurrentUserEmail
+            responses:
+                "200":
+                    description: OK
+    /api/user/emails:
+        get:
+            tags:
+                - Emails
+            summary: Get emails
+            description: Retrieve the emails of the logged-in user
+            operationId: getCurrentUserEmails
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesEmail'
+    /api/verify:
+        post:
+            summary: Verify
+            description: Verify a token
+            operationId: verify
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesSession'
+components:
+    schemas:
+        CreateCurrentUserEmailInput:
+            type: object
+            properties:
+                email:
+                    type: string
+        PatchCurrentUserInput:
+            type: object
+            properties:
+                created_at:
+                    type: integer
+                    format: int64
+                deleted_at:
+                    type: integer
+                    format: int64
+                    nullable: true
+                id:
+                    type: integer
+                    format: int32
+                updated_at:
+                    type: integer
+                    format: int64
+                username:
+                    type: string
+        TypesCredentialsMethods:
+            type: object
+            properties:
+                description:
+                    type: string
+                name:
+                    type: string
+        TypesEmail:
+            type: object
+            properties:
+                created_at:
+                    type: integer
+                    format: int64
+                deleted_at:
+                    type: integer
+                    format: int64
+                    nullable: true
+                email:
+                    type: string
+                id:
+                    type: integer
+                    format: int32
+                updated_at:
+                    type: integer
+                    format: int64
+                user_id:
+                    type: integer
+                    format: int32
+        TypesSession:
+            type: object
+            properties:
+                created_at:
+                    type: integer
+                    format: int64
+                deleted_at:
+                    type: integer
+                    format: int64
+                    nullable: true
+                id:
+                    type: integer
+                    format: int32
+                token:
+                    type: string
+                updated_at:
+                    type: integer
+                    format: int64
+                user:
+                    type: integer
+                    format: int32
+        TypesUser:
+            type: object
+            properties:
+                created_at:
+                    type: integer
+                    format: int64
+                deleted_at:
+                    type: integer
+                    format: int64
+                    nullable: true
+                id:
+                    type: integer
+                    format: int32
+                updated_at:
+                    type: integer
+                    format: int64
+                username:
+                    type: string
+tags:
+    - name: Email
+      description: User emails
+    - name: Emails
+      description: User emails
+    - name: User
