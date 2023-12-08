@@ -19,11 +19,7 @@ jobs:
         run: |
           REF=${{ github.event.client_payload.ref }}
           if [ "$REF" = "refs/heads/main" ]; then
-            echo "PATH=dev.yaml" >> $GITHUB_OUTPUT
-          elif [[ "$REF" =~ ^refs/tags/v*beta ]]; then
-            echo "PATH=beta.yaml" >> $GITHUB_OUTPUT
-          elif [[ "$REF" =~ ^refs/tags/v* ]]; then
-            echo "PATH=stable.yaml" >> $GITHUB_OUTPUT
+            echo "Ref: main"
           else
             echo "Invalid ref: $REF"
             exit 1
@@ -35,12 +31,6 @@ jobs:
           repository: vertex-center/vertex
           ref: ${{ github.event.client_payload.ref }}
           path: vertex
-
-      - name: Download docapi
-        uses: actions/checkout@v4
-        with:
-          repository: quentinguidee/docapi
-          path: docapi
 
       - name: Download Vertex-OpenAPI
         uses: actions/checkout@v4
@@ -55,23 +45,11 @@ jobs:
 
       - name: Generate openapi.yaml
         run: |
-          cd docapi
-          go run ./cmd ../vertex
+          cd vertex
+          go run ./cmd/openapi
           cd ..
-          if [ -f openapi/${{ steps.setup-variables.outputs.PATH }} ]; then
-            rm openapi/${{ steps.setup-variables.outputs.PATH }}
-          fi
-          cp docapi/openapi.vertex.yaml openapi/openapi.vertex.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.admin.yaml openapi/openapi.admin.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.admin_kernel.yaml openapi/openapi.admin_kernel.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.auth.yaml openapi/openapi.auth.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.containers_kernel.yaml openapi/openapi.containers_kernel.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.containers.yaml openapi/openapi.containers.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.monitoring.yaml openapi/openapi.monitoring.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.proxy.yaml openapi/openapi.proxy.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.service_editor.yaml openapi/openapi.service_editor.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.sql.yaml openapi/openapi.sql.${{ steps.setup-variables.outputs.PATH }}
-          cp docapi/openapi.tunnels.yaml openapi/openapi.tunnels.${{ steps.setup-variables.outputs.PATH }}
+          rm -rf openapi/*.yaml
+          cp -r vertex/openapi/. openapi/
 
       - name: Commit and push changes if needed
         run: |
