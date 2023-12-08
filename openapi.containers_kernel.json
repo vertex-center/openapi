@@ -1,0 +1,555 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "Vertex Containers",
+		"description": "Create and manage containers.",
+		"version": ""
+	},
+	"paths": {
+		"/api/docker/container": {
+			"post": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Create container",
+				"operationId": "createContainer",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateContainerInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TypesCreateContainerResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}": {
+			"delete": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Delete container",
+				"operationId": "deleteContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/info": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Get container info",
+				"operationId": "infoContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TypesInfoContainerResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/logs/stderr": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Get container stderr logs",
+				"description": "Get container stderr logs as a stream.",
+				"operationId": "logsStderrContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/logs/stdout": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Get container stdout logs",
+				"description": "Get container stdout logs as a stream.",
+				"operationId": "logsStdoutContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/mounts": {
+			"delete": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Delete mounts",
+				"operationId": "deleteMounts",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/start": {
+			"post": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Start container",
+				"operationId": "startContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/stop": {
+			"post": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Stop container",
+				"operationId": "stopContainer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/container/{id}/wait/{cond}": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Wait container",
+				"operationId": "waitContainer",
+				"parameters": [
+					{
+						"name": "cond",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/containers": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Get containers",
+				"operationId": "getContainers",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/TypesDockerContainer"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/docker/image/build": {
+			"post": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Build image",
+				"operationId": "buildImage",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BuildImageInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/image/pull": {
+			"post": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Pull image",
+				"operationId": "pullImage",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PullImageInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/api/docker/image/{id}/info": {
+			"get": {
+				"tags": [
+					"Docker"
+				],
+				"summary": "Get image info",
+				"operationId": "infoImage",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TypesInfoImageResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/ping": {
+			"get": {
+				"summary": "Ping the app",
+				"operationId": "func1",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"BuildImageInput": {
+				"type": "object",
+				"properties": {
+					"dir": {
+						"type": "string"
+					},
+					"dockerfile": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"CreateContainerInput": {
+				"type": "object",
+				"properties": {
+					"binds": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"cap_add": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"cmd": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"container_name": {
+						"type": "string"
+					},
+					"env": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"exposed_ports": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "object"
+						}
+					},
+					"image_name": {
+						"type": "string"
+					},
+					"port_bindings": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/NatPortBinding"
+							}
+						}
+					},
+					"sysctls": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"NatPortBinding": {
+				"type": "object",
+				"properties": {
+					"HostIp": {
+						"type": "string"
+					},
+					"HostPort": {
+						"type": "string"
+					}
+				}
+			},
+			"PullImageInput": {
+				"type": "object",
+				"properties": {
+					"image": {
+						"type": "string"
+					}
+				}
+			},
+			"TypesCreateContainerResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"warnings": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"TypesDockerContainer": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"image_id": {
+						"type": "string"
+					},
+					"mounts": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/TypesMount"
+						}
+					},
+					"names": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"TypesInfoContainerResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"image": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"platform": {
+						"type": "string"
+					},
+					"port_bindings": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"TypesInfoImageResponse": {
+				"type": "object",
+				"properties": {
+					"architecture": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"os": {
+						"type": "string"
+					},
+					"size": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"TypesMount": {
+				"type": "object",
+				"properties": {
+					"destination": {
+						"type": "string"
+					},
+					"source": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"tags": [
+		{
+			"name": "Docker",
+			"description": "Docker wrapper"
+		}
+	]
+}
