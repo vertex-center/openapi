@@ -27,7 +27,7 @@ paths:
     /api/ping:
         get:
             summary: Ping the app
-            operationId: func1
+            operationId: ping
             responses:
                 "200":
                     description: OK
