@@ -6,6 +6,8 @@ info:
 paths:
     /api/container/{container_uuid}:
         get:
+            tags:
+                - Container
             summary: Get an installed DBMS
             operationId: getDBMS
             parameters:
@@ -23,6 +25,8 @@ paths:
                                 $ref: '#/components/schemas/TypesDBMS'
     /api/dbms/{dbms}/install:
         post:
+            tags:
+                - DBMS
             summary: Install a DBMS
             operationId: installDBMS
             parameters:
@@ -322,3 +326,6 @@ components:
                     minItems: 16
                 Valid:
                     type: boolean
+tags:
+    - name: Container
+    - name: DBMS

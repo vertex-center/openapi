@@ -6,6 +6,8 @@ info:
 paths:
     /api/collector/{collector}/install:
         post:
+            tags:
+                - Collector
             summary: Install a collector
             operationId: installCollector
             parameters:
@@ -19,6 +21,8 @@ paths:
                     description: OK
     /api/metrics:
         get:
+            tags:
+                - Metrics
             summary: Get metrics
             operationId: getMetrics
             responses:
@@ -39,6 +43,8 @@ paths:
                     description: OK
     /api/visualizer/{visualizer}/install:
         post:
+            tags:
+                - Visualizer
             summary: Install a visualizer
             operationId: installVisualizer
             parameters:
@@ -67,3 +73,7 @@ components:
                     type: string
                 type:
                     type: string
+tags:
+    - name: Collector
+    - name: Metrics
+    - name: Visualizer

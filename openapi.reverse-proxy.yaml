@@ -13,6 +13,8 @@ paths:
                     description: OK
     /api/redirect:
         post:
+            tags:
+                - Redirect
             summary: Add redirect
             operationId: addRedirect
             requestBody:
@@ -25,6 +27,8 @@ paths:
                     description: OK
     /api/redirect/{id}:
         delete:
+            tags:
+                - Redirect
             summary: Remove redirect
             operationId: removeRedirect
             parameters:
@@ -38,6 +42,8 @@ paths:
                     description: OK
     /api/redirects:
         get:
+            tags:
+                - Redirects
             summary: Get redirects
             operationId: getRedirects
             responses:
@@ -67,3 +73,6 @@ components:
                     minItems: 16
                 Valid:
                     type: boolean
+tags:
+    - name: Redirect
+    - name: Redirects
