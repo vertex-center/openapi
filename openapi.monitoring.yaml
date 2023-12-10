@@ -4,6 +4,25 @@ info:
     description: Create and manage containers.
     version: ""
 paths:
+    /api/collector/{collector}:
+        get:
+            tags:
+                - Collector
+            summary: Get a collector
+            operationId: getCollector
+            parameters:
+                - name: collector
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesCollector'
     /api/collector/{collector}/install:
         post:
             tags:
@@ -19,21 +38,6 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/metrics:
-        get:
-            tags:
-                - Metrics
-            summary: Get metrics
-            operationId: getMetrics
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesMetric'
     /api/ping:
         get:
             summary: Ping the app
@@ -58,7 +62,7 @@ paths:
                     description: OK
 components:
     schemas:
-        TypesMetric:
+        MetricMetric:
             type: object
             properties:
                 description:
@@ -73,7 +77,15 @@ components:
                     type: string
                 type:
                     type: string
+        TypesCollector:
+            type: object
+            properties:
+                is_alive:
+                    type: boolean
+                metrics:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MetricMetric'
 tags:
     - name: Collector
-    - name: Metrics
     - name: Visualizer

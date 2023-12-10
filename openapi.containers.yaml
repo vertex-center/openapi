@@ -280,6 +280,16 @@ paths:
                                 type: array
                                 items:
                                     type: string
+    /api/metrics:
+        get:
+            tags:
+                - Metrics
+            summary: Get metrics
+            description: Retrieve metrics for Prometheus.
+            operationId: getMetrics
+            responses:
+                "200":
+                    description: OK
     /api/ping:
         get:
             summary: Ping the app
@@ -652,5 +662,6 @@ components:
 tags:
     - name: Container
     - name: Containers
+    - name: Metrics
     - name: Service
     - name: Services
