@@ -224,8 +224,6 @@ components:
                 repository:
                     type: string
                     example: https://github.com/vertex-center/vertex
-        TypesServiceDependency:
-            type: object
         TypesServiceEnv:
             type: object
             properties:
@@ -284,33 +282,11 @@ components:
                     type: object
                     additionalProperties:
                         type: string
-        TypesServiceMethodRelease:
-            type: object
-            properties:
-                dependencies:
-                    type: object
-                    additionalProperties:
-                        $ref: '#/components/schemas/TypesServiceDependency'
-        TypesServiceMethodScript:
-            type: object
-            properties:
-                clone:
-                    $ref: '#/components/schemas/TypesServiceClone'
-                dependencies:
-                    type: object
-                    additionalProperties:
-                        $ref: '#/components/schemas/TypesServiceDependency'
-                file:
-                    type: string
         TypesServiceMethods:
             type: object
             properties:
                 docker:
                     $ref: '#/components/schemas/TypesServiceMethodDocker'
-                release:
-                    $ref: '#/components/schemas/TypesServiceMethodRelease'
-                script:
-                    $ref: '#/components/schemas/TypesServiceMethodScript'
         TypesServiceUpdate:
             type: object
             properties:
