@@ -44,8 +44,22 @@ paths:
                     type: string
                     format: uuid
             responses:
-                "200":
-                    description: OK
+                "204":
+                    description: No Content
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container still running
         patch:
             tags:
                 - Container
