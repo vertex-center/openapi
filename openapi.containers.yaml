@@ -15,7 +15,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -40,7 +40,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -54,7 +54,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             requestBody:
                 content:
                     application/json:
@@ -74,7 +74,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -94,7 +94,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -109,7 +109,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             requestBody:
                 content:
                     application/json:
@@ -130,7 +130,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -145,7 +145,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -166,7 +166,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -181,7 +181,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -196,7 +196,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -211,7 +211,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -232,7 +232,7 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    $ref: '#/components/schemas/TypesContainerID'
             responses:
                 "200":
                     description: OK
@@ -363,12 +363,7 @@ components:
             type: object
             properties:
                 container_id:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                    maxItems: 16
-                    minItems: 16
+                    $ref: '#/components/schemas/TypesContainerID'
                 db_name:
                     type: string
                     nullable: true
@@ -409,12 +404,7 @@ components:
                 databases:
                     type: object
                     additionalProperties:
-                        type: array
-                        items:
-                            type: integer
-                            format: int32
-                        maxItems: 16
-                        minItems: 16
+                        $ref: '#/components/schemas/TypesContainerID'
                 display_name:
                     type: string
                 environment:
@@ -441,15 +431,12 @@ components:
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 uuid:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                    maxItems: 16
-                    minItems: 16
+                    $ref: '#/components/schemas/TypesContainerID'
                 version:
                     type: string
                     nullable: true
+        TypesContainerID:
+            type: object
         TypesContainerUpdate:
             type: object
             properties:
@@ -684,18 +671,6 @@ components:
                 port:
                     type: string
                     example: "3000"
-        UuidNullUUID:
-            type: object
-            properties:
-                UUID:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                    maxItems: 16
-                    minItems: 16
-                Valid:
-                    type: boolean
 tags:
     - name: Container
     - name: Containers
