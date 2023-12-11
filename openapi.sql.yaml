@@ -85,6 +85,7 @@ components:
                     $ref: '#/components/schemas/TypesServiceUpdate'
                 status:
                     type: string
+                    example: running
                 tags:
                     type: array
                     items:
@@ -153,18 +154,24 @@ components:
             properties:
                 category:
                     type: string
+                    example: sql
                 database_default:
                     type: string
+                    example: postgres
                     nullable: true
                 password:
                     type: string
+                    example: postgres
                     nullable: true
                 port:
                     type: string
+                    example: "5432"
                 type:
                     type: string
+                    example: postgres
                 username:
                     type: string
+                    example: postgres
                     nullable: true
         TypesFeatures:
             type: object
@@ -178,6 +185,7 @@ components:
             properties:
                 color:
                     type: string
+                    example: '#f38ba8'
                     nullable: true
                 databases:
                     type: object
@@ -185,6 +193,7 @@ components:
                         $ref: '#/components/schemas/TypesDatabaseEnvironment'
                 description:
                     type: string
+                    example: The authentication service of Vertex.
                 environment:
                     type: array
                     items:
@@ -193,15 +202,19 @@ components:
                     $ref: '#/components/schemas/TypesFeatures'
                 icon:
                     type: string
+                    example: vertex.svg
                     nullable: true
                 id:
                     type: string
+                    example: vertex-auth
                 methods:
                     $ref: '#/components/schemas/TypesServiceMethods'
                 name:
                     type: string
+                    example: Vertex Auth
                 repository:
                     type: string
+                    example: https://github.com/vertex-center/vertex
                     nullable: true
                 urls:
                     type: array
@@ -210,11 +223,13 @@ components:
                 version:
                     type: integer
                     format: int32
+                    example: 2
         TypesServiceClone:
             type: object
             properties:
                 repository:
                     type: string
+                    example: https://github.com/vertex-center/vertex
         TypesServiceDependency:
             type: object
         TypesServiceEnv:
@@ -222,17 +237,23 @@ components:
             properties:
                 default:
                     type: string
+                    example: "8080"
                 description:
                     type: string
+                    example: The port where the server will listen.
                 display_name:
                     type: string
+                    example: Server Port
                 name:
                     type: string
+                    example: PORT
                 secret:
                     type: boolean
+                    example: false
                     nullable: true
                 type:
                     type: string
+                    example: port
         TypesServiceMethodDocker:
             type: object
             properties:
@@ -247,6 +268,7 @@ components:
                     nullable: true
                 dockerfile:
                     type: string
+                    example: Dockerfile
                     nullable: true
                 environment:
                     type: object
@@ -254,6 +276,7 @@ components:
                         type: string
                 image:
                     type: string
+                    example: ghcr.io/vertex-center/vertex
                     nullable: true
                 ports:
                     type: object
@@ -304,16 +327,23 @@ components:
             properties:
                 home:
                     type: string
+                    example: /home
                     nullable: true
                 kind:
                     type: string
+                    enum:
+                        - client
+                        - server
                 name:
                     type: string
+                    example: Vertex Client
                 ping:
                     type: string
+                    example: /ping
                     nullable: true
                 port:
                     type: string
+                    example: "3000"
         UuidNullUUID:
             type: object
             properties:
