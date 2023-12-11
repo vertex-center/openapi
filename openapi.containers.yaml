@@ -15,7 +15,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -40,7 +41,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -54,7 +56,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             requestBody:
                 content:
                     application/json:
@@ -74,7 +77,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -94,7 +98,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -109,7 +114,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             requestBody:
                 content:
                     application/json:
@@ -130,7 +136,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -145,7 +152,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -166,7 +174,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -181,7 +190,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -196,7 +206,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -211,7 +222,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -232,7 +244,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -363,7 +376,8 @@ components:
             type: object
             properties:
                 container_id:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
                 db_name:
                     type: string
                     nullable: true
@@ -431,7 +445,8 @@ components:
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 uuid:
-                    $ref: '#/components/schemas/TypesContainerID'
+                    type: string
+                    format: uuid
                 version:
                     type: string
                     nullable: true
