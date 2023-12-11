@@ -9,8 +9,8 @@ paths:
             summary: Ping the app
             operationId: ping
             responses:
-                "200":
-                    description: OK
+                "204":
+                    description: No Content
     /api/redirect:
         post:
             tags:

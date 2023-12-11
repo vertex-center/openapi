@@ -1,0 +1,25 @@
+openapi: 3.0.1
+info:
+    title: Vertex Logs
+    description: Gather and view logs from all Vertex apps
+    version: ""
+paths:
+    /api/logs/ws:
+        get:
+            tags:
+                - Logs
+            summary: Push logs to the server
+            operationId: pushLogs
+            responses:
+                "200":
+                    description: OK
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: ping
+            responses:
+                "204":
+                    description: No Content
+components: {}
+tags:
+    - name: Logs
