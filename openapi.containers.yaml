@@ -774,8 +774,8 @@ components:
                     type: string
                     example: Vertex SQL
                 user_id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
         TypesURL:
             type: object
             properties:

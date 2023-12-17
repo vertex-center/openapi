@@ -165,8 +165,8 @@ components:
                     format: int64
                     nullable: true
                 id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
                 updated_at:
                     type: integer
                     format: int64
@@ -192,14 +192,14 @@ components:
                 email:
                     type: string
                 id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
                 updated_at:
                     type: integer
                     format: int64
                 user_id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
         TypesSession:
             type: object
             properties:
@@ -211,16 +211,16 @@ components:
                     format: int64
                     nullable: true
                 id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
                 token:
                     type: string
                 updated_at:
                     type: integer
                     format: int64
                 user:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
         TypesUser:
             type: object
             properties:
@@ -232,8 +232,8 @@ components:
                     format: int64
                     nullable: true
                 id:
-                    type: integer
-                    format: int32
+                    type: string
+                    format: uuid
                 updated_at:
                     type: integer
                     format: int64
