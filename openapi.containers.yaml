@@ -44,8 +44,8 @@ paths:
                     type: string
                     format: uuid
             responses:
-                "204":
-                    description: No Content
+                "200":
+                    description: OK
                 "404":
                     description: Container not found
                     content:
@@ -80,6 +80,20 @@ paths:
             responses:
                 "200":
                     description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to patch container
     /api/container/{container_id}/docker:
         get:
             tags:
@@ -101,6 +115,20 @@ paths:
                             schema:
                                 type: object
                                 additionalProperties: {}
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get Docker container info
     /api/container/{container_id}/docker/recreate:
         post:
             tags:
@@ -115,8 +143,22 @@ paths:
                     type: string
                     format: uuid
             responses:
-                "200":
-                    description: OK
+                "204":
+                    description: No Content
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to recreate Docker container
     /api/container/{container_id}/environment:
         get:
             tags:
@@ -139,6 +181,20 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesEnvVariable'
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get container environment
         patch:
             tags:
                 - Container
@@ -159,6 +215,20 @@ paths:
             responses:
                 "200":
                     description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to patch container environment
     /api/container/{container_id}/events:
         get:
             tags:
@@ -176,11 +246,26 @@ paths:
             responses:
                 "200":
                     description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get container events
     /api/container/{container_id}/logs:
         get:
             tags:
                 - Container
             summary: Get container logs
+            description: Get latest container logs.
             operationId: getContainerLogs
             parameters:
                 - name: container_id
@@ -198,6 +283,20 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesLogLine'
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get container logs
     /api/container/{container_id}/start:
         post:
             tags:
@@ -214,6 +313,20 @@ paths:
             responses:
                 "200":
                     description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to start container
     /api/container/{container_id}/stop:
         post:
             tags:
@@ -230,6 +343,20 @@ paths:
             responses:
                 "200":
                     description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to stop container
     /api/container/{container_id}/tag/{tag_id}:
         put:
             tags:
@@ -252,11 +379,19 @@ paths:
             responses:
                 "200":
                     description: OK
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to link tag to container
     /api/container/{container_id}/versions:
         get:
             tags:
                 - Container
-            summary: Get container versions
+            summary: Get container image versions
+            description: Get the possible versions of the container image that can be used.
             operationId: getContainerVersions
             parameters:
                 - name: container_id
@@ -279,11 +414,26 @@ paths:
                                 type: array
                                 items:
                                     type: string
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get container image versions
     /api/container/{container_id}/wait:
         get:
             tags:
                 - Container
             summary: Wait for a status change
+            description: Wait for a status change of the container.
             operationId: waitContainerStatus
             parameters:
                 - name: container_id
@@ -293,8 +443,29 @@ paths:
                     type: string
                     format: uuid
             responses:
-                "200":
-                    description: OK
+                "204":
+                    description: No Content
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "408":
+                    description: Timeout
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: wait status timeout
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to wait for status change
     /api/containers:
         get:
             tags:
