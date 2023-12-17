@@ -36,7 +36,8 @@ paths:
                   in: path
                   required: true
                   schema:
-                    $ref: '#/components/schemas/UuidNullUUID'
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -61,14 +62,6 @@ components:
             required:
                 - source
                 - target
-        UuidNullUUID:
-            type: object
-            properties:
-                UUID:
-                    type: string
-                    format: uuid
-                Valid:
-                    type: boolean
 tags:
     - name: Redirect
     - name: Redirects
