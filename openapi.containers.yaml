@@ -475,8 +475,8 @@ components:
         CreateTagInput:
             type: object
             properties:
-                tag:
-                    $ref: '#/components/schemas/TypesTag'
+                name:
+                    type: string
         PatchContainerEnvironmentInput:
             type: object
             properties:
