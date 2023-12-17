@@ -510,7 +510,12 @@ components:
                 databases:
                     type: object
                     additionalProperties:
-                        $ref: '#/components/schemas/UuidUUID'
+                        type: array
+                        items:
+                            type: integer
+                            format: int32
+                        maxItems: 16
+                        minItems: 16
                 description:
                     type: string
                     example: An SQL database.
@@ -792,8 +797,6 @@ components:
                 port:
                     type: string
                     example: "3000"
-        UuidUUID:
-            type: object
 tags:
     - name: Container
     - name: Containers
