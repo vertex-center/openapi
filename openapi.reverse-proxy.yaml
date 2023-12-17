@@ -65,12 +65,8 @@ components:
             type: object
             properties:
                 UUID:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                    maxItems: 16
-                    minItems: 16
+                    type: string
+                    format: uuid
                 Valid:
                     type: boolean
 tags:

@@ -510,7 +510,7 @@ components:
                 databases:
                     type: object
                     additionalProperties:
-                        $ref: '#/components/schemas/TypesContainerID'
+                        $ref: '#/components/schemas/UuidUUID'
                 description:
                     type: string
                     example: An SQL database.
@@ -543,14 +543,8 @@ components:
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 user_id:
-                    type: array
-                    items:
-                        type: integer
-                        format: int32
-                    maxItems: 16
-                    minItems: 16
-        TypesContainerID:
-            type: object
+                    type: string
+                    format: uuid
         TypesContainerUpdate:
             type: object
             properties:
@@ -798,6 +792,8 @@ components:
                 port:
                     type: string
                     example: "3000"
+        UuidUUID:
+            type: object
 tags:
     - name: Container
     - name: Containers
