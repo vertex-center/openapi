@@ -4,14 +4,14 @@ info:
     description: Create and manage containers.
     version: ""
 paths:
-    /api/container/{container_uuid}:
+    /api/container/{container_id}:
         get:
             tags:
                 - Container
             summary: Get a container
             operationId: getContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -37,7 +37,7 @@ paths:
             summary: Delete a container
             operationId: deleteContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -66,7 +66,7 @@ paths:
             summary: Patch a container
             operationId: patchContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -80,14 +80,14 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/docker:
+    /api/container/{container_id}/docker:
         get:
             tags:
                 - Container
             summary: Get Docker container info
             operationId: getDockerContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -101,14 +101,14 @@ paths:
                             schema:
                                 type: object
                                 additionalProperties: {}
-    /api/container/{container_uuid}/docker/recreate:
+    /api/container/{container_id}/docker/recreate:
         post:
             tags:
                 - Container
             summary: Recreate Docker container
             operationId: recreateDockerContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -117,14 +117,35 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/environment:
+    /api/container/{container_id}/environment:
+        get:
+            tags:
+                - Container
+            summary: Get container environment
+            operationId: getContainerEnvironment
+            parameters:
+                - name: container_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesEnvVariable'
         patch:
             tags:
                 - Container
             summary: Patch a container environment
             operationId: patchContainerEnvironment
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -138,7 +159,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/events:
+    /api/container/{container_id}/events:
         get:
             tags:
                 - Container
@@ -146,7 +167,7 @@ paths:
             description: Get events for a container, sent as Server-Sent Events (SSE).
             operationId: eventsContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -155,14 +176,14 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/logs:
+    /api/container/{container_id}/logs:
         get:
             tags:
                 - Container
             summary: Get container logs
             operationId: getContainerLogs
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -177,14 +198,14 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesLogLine'
-    /api/container/{container_uuid}/start:
+    /api/container/{container_id}/start:
         post:
             tags:
                 - Container
             summary: Start a container
             operationId: startContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -193,14 +214,14 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/stop:
+    /api/container/{container_id}/stop:
         post:
             tags:
                 - Container
             summary: Stop a container
             operationId: stopContainer
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -209,14 +230,20 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/update/service:
-        post:
+    /api/container/{container_id}/tag/{tag_id}:
+        put:
             tags:
                 - Container
-            summary: Update service
-            operationId: updateService
+            summary: Link tag to container
+            operationId: addContainerTag
             parameters:
-                - name: container_uuid
+                - name: container_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+                - name: tag_id
                   in: path
                   required: true
                   schema:
@@ -225,19 +252,24 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/container/{container_uuid}/versions:
+    /api/container/{container_id}/versions:
         get:
             tags:
                 - Container
             summary: Get container versions
             operationId: getContainerVersions
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
                     type: string
                     format: uuid
+                - name: cache
+                  in: query
+                  allowEmptyValue: true
+                  schema:
+                    type: boolean
             responses:
                 "200":
                     description: OK
@@ -247,14 +279,14 @@ paths:
                                 type: array
                                 items:
                                     type: string
-    /api/container/{container_uuid}/wait:
+    /api/container/{container_id}/wait:
         get:
             tags:
                 - Container
             summary: Wait for a status change
             operationId: waitContainerStatus
             parameters:
-                - name: container_uuid
+                - name: container_id
                   in: path
                   required: true
                   schema:
@@ -272,6 +304,12 @@ paths:
             responses:
                 "200":
                     description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesContainer'
     /api/containers/checkupdates:
         get:
             tags:
@@ -281,6 +319,12 @@ paths:
             responses:
                 "200":
                     description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesContainer'
     /api/containers/events:
         get:
             tags:
@@ -290,30 +334,6 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/containers/search:
-        get:
-            tags:
-                - Containers
-            summary: Search containers
-            operationId: searchContainers
-            responses:
-                "200":
-                    description: OK
-    /api/containers/tags:
-        get:
-            tags:
-                - Containers
-            summary: Get tags
-            operationId: getTags
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    type: string
     /api/metrics:
         get:
             tags:
@@ -384,86 +404,151 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesService'
-components:
-    schemas:
-        HandlerPatchBodyDatabase:
-            type: object
-            properties:
-                container_id:
+    /api/tag:
+        get:
+            tags:
+                - Tag
+            summary: Get tag
+            operationId: getTag
+            parameters:
+                - name: name
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesTag'
+        post:
+            tags:
+                - Tag
+            summary: Create tag
+            operationId: createTag
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateTagInput'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesTag'
+    /api/tag/{id}:
+        delete:
+            tags:
+                - Tag
+            summary: Delete tag
+            operationId: deleteTag
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
                     type: string
                     format: uuid
-                db_name:
-                    type: string
-                    nullable: true
+            responses:
+                "200":
+                    description: OK
+    /api/tags:
+        get:
+            tags:
+                - Tags
+            summary: Get tags
+            operationId: getTags
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesTag'
+components:
+    schemas:
+        CreateTagInput:
+            type: object
+            properties:
+                tag:
+                    $ref: '#/components/schemas/TypesTag'
         PatchContainerEnvironmentInput:
             type: object
             properties:
                 Env:
-                    type: object
-                    additionalProperties:
-                        type: string
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesEnvVariable'
         PatchContainerInput:
             type: object
             properties:
-                databases:
-                    type: object
-                    additionalProperties:
-                        $ref: '#/components/schemas/HandlerPatchBodyDatabase'
-                display_name:
+                image_tag:
                     type: string
                     nullable: true
                 launch_on_startup:
                     type: boolean
                     nullable: true
-                tags:
-                    type: array
-                    items:
-                        type: string
-                version:
+                name:
                     type: string
                     nullable: true
         TypesContainer:
             type: object
             properties:
-                cache_versions:
-                    type: array
-                    items:
-                        type: string
+                color:
+                    type: string
+                    example: '#336699'
+                    nullable: true
+                command:
+                    type: string
+                    example: tunnel run
+                    nullable: true
                 databases:
                     type: object
                     additionalProperties:
                         $ref: '#/components/schemas/TypesContainerID'
-                display_name:
+                description:
                     type: string
-                environment:
-                    type: object
-                    additionalProperties:
-                        type: string
-                install_method:
-                    type: string
+                    example: An SQL database.
                     nullable: true
+                icon:
+                    type: string
+                    example: simpleicons/postgres.svg
+                    nullable: true
+                id:
+                    type: string
+                    format: uuid
+                image:
+                    type: string
+                    example: postgres
+                image_tag:
+                    type: string
+                    example: latest
                 launch_on_startup:
                     type: boolean
-                    nullable: true
-                service:
-                    $ref: '#/components/schemas/TypesService'
-                service_update:
-                    $ref: '#/components/schemas/TypesServiceUpdate'
+                    example: true
+                name:
+                    type: string
+                    example: Postgres
+                service_id:
+                    type: string
+                    example: postgres
                 status:
                     type: string
                     example: running
-                tags:
-                    type: array
-                    items:
-                        type: string
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
-                uuid:
-                    type: string
-                    format: uuid
-                version:
-                    type: string
-                    nullable: true
+                user_id:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                    maxItems: 16
+                    minItems: 16
         TypesContainerID:
             type: object
         TypesContainerUpdate:
@@ -521,6 +606,36 @@ components:
                     type: string
                     example: postgres
                     nullable: true
+        TypesEnvVariable:
+            type: object
+            properties:
+                container_id:
+                    type: string
+                    format: uuid
+                default:
+                    type: string
+                    example: "5432"
+                    nullable: true
+                description:
+                    type: string
+                    example: The server database port
+                    nullable: true
+                display_name:
+                    type: string
+                    example: Database Port
+                name:
+                    type: string
+                    example: DB_PORT
+                secret:
+                    type: boolean
+                    example: true
+                type:
+                    type: string
+                    enum:
+                        - port
+                value:
+                    type: string
+                    example: "5400"
         TypesFeatures:
             type: object
             properties:
@@ -649,11 +764,18 @@ components:
             properties:
                 docker:
                     $ref: '#/components/schemas/TypesServiceMethodDocker'
-        TypesServiceUpdate:
+        TypesTag:
             type: object
             properties:
-                available:
-                    type: boolean
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                    example: Vertex SQL
+                user_id:
+                    type: integer
+                    format: int32
         TypesURL:
             type: object
             properties:
@@ -682,3 +804,5 @@ tags:
     - name: Metrics
     - name: Service
     - name: Services
+    - name: Tag
+    - name: Tags

@@ -55,45 +55,56 @@ components:
         TypesContainer:
             type: object
             properties:
-                cache_versions:
-                    type: array
-                    items:
-                        type: string
+                color:
+                    type: string
+                    example: '#336699'
+                    nullable: true
+                command:
+                    type: string
+                    example: tunnel run
+                    nullable: true
                 databases:
                     type: object
                     additionalProperties:
                         $ref: '#/components/schemas/TypesContainerID'
-                display_name:
+                description:
                     type: string
-                environment:
-                    type: object
-                    additionalProperties:
-                        type: string
-                install_method:
-                    type: string
+                    example: An SQL database.
                     nullable: true
+                icon:
+                    type: string
+                    example: simpleicons/postgres.svg
+                    nullable: true
+                id:
+                    type: string
+                    format: uuid
+                image:
+                    type: string
+                    example: postgres
+                image_tag:
+                    type: string
+                    example: latest
                 launch_on_startup:
                     type: boolean
-                    nullable: true
-                service:
-                    $ref: '#/components/schemas/TypesService'
-                service_update:
-                    $ref: '#/components/schemas/TypesServiceUpdate'
+                    example: true
+                name:
+                    type: string
+                    example: Postgres
+                service_id:
+                    type: string
+                    example: postgres
                 status:
                     type: string
                     example: running
-                tags:
-                    type: array
-                    items:
-                        type: string
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
-                uuid:
-                    type: string
-                    format: uuid
-                version:
-                    type: string
-                    nullable: true
+                user_id:
+                    type: array
+                    items:
+                        type: integer
+                        format: int32
+                    maxItems: 16
+                    minItems: 16
         TypesContainerID:
             type: object
         TypesContainerUpdate:
@@ -119,201 +130,6 @@ components:
                     type: string
                 username:
                     type: string
-        TypesDatabaseEnvironment:
-            type: object
-            properties:
-                display_name:
-                    type: string
-                names:
-                    $ref: '#/components/schemas/TypesDatabaseEnvironmentNames'
-                types:
-                    type: array
-                    items:
-                        type: string
-        TypesDatabaseEnvironmentNames:
-            type: object
-            properties:
-                database:
-                    type: string
-                host:
-                    type: string
-                password:
-                    type: string
-                port:
-                    type: string
-                username:
-                    type: string
-        TypesDatabaseFeature:
-            type: object
-            properties:
-                category:
-                    type: string
-                    example: sql
-                database_default:
-                    type: string
-                    example: postgres
-                    nullable: true
-                password:
-                    type: string
-                    example: postgres
-                    nullable: true
-                port:
-                    type: string
-                    example: "5432"
-                type:
-                    type: string
-                    example: postgres
-                username:
-                    type: string
-                    example: postgres
-                    nullable: true
-        TypesFeatures:
-            type: object
-            properties:
-                databases:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TypesDatabaseFeature'
-        TypesService:
-            type: object
-            properties:
-                color:
-                    type: string
-                    example: '#f38ba8'
-                    nullable: true
-                databases:
-                    type: object
-                    additionalProperties:
-                        $ref: '#/components/schemas/TypesDatabaseEnvironment'
-                description:
-                    type: string
-                    example: The authentication service of Vertex.
-                environment:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TypesServiceEnv'
-                features:
-                    $ref: '#/components/schemas/TypesFeatures'
-                icon:
-                    type: string
-                    example: vertex.svg
-                    nullable: true
-                id:
-                    type: string
-                    example: vertex-auth
-                methods:
-                    $ref: '#/components/schemas/TypesServiceMethods'
-                name:
-                    type: string
-                    example: Vertex Auth
-                repository:
-                    type: string
-                    example: https://github.com/vertex-center/vertex
-                    nullable: true
-                urls:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TypesURL'
-                version:
-                    type: integer
-                    format: int32
-                    example: 2
-        TypesServiceClone:
-            type: object
-            properties:
-                repository:
-                    type: string
-                    example: https://github.com/vertex-center/vertex
-        TypesServiceEnv:
-            type: object
-            properties:
-                default:
-                    type: string
-                    example: "8080"
-                description:
-                    type: string
-                    example: The port where the server will listen.
-                display_name:
-                    type: string
-                    example: Server Port
-                name:
-                    type: string
-                    example: PORT
-                secret:
-                    type: boolean
-                    example: false
-                    nullable: true
-                type:
-                    type: string
-                    example: port
-        TypesServiceMethodDocker:
-            type: object
-            properties:
-                capabilities:
-                    type: array
-                    items:
-                        type: string
-                clone:
-                    $ref: '#/components/schemas/TypesServiceClone'
-                command:
-                    type: string
-                    nullable: true
-                dockerfile:
-                    type: string
-                    example: Dockerfile
-                    nullable: true
-                environment:
-                    type: object
-                    additionalProperties:
-                        type: string
-                image:
-                    type: string
-                    example: ghcr.io/vertex-center/vertex
-                    nullable: true
-                ports:
-                    type: object
-                    additionalProperties:
-                        type: string
-                sysctls:
-                    type: object
-                    additionalProperties:
-                        type: string
-                volumes:
-                    type: object
-                    additionalProperties:
-                        type: string
-        TypesServiceMethods:
-            type: object
-            properties:
-                docker:
-                    $ref: '#/components/schemas/TypesServiceMethodDocker'
-        TypesServiceUpdate:
-            type: object
-            properties:
-                available:
-                    type: boolean
-        TypesURL:
-            type: object
-            properties:
-                home:
-                    type: string
-                    example: /home
-                    nullable: true
-                kind:
-                    type: string
-                    enum:
-                        - client
-                        - server
-                name:
-                    type: string
-                    example: Vertex Client
-                ping:
-                    type: string
-                    example: /ping
-                    nullable: true
-                port:
-                    type: string
-                    example: "3000"
 tags:
     - name: Container
     - name: DBMS
