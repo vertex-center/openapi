@@ -1,0 +1,14 @@
+openapi: 3.0.1
+info:
+    title: Vertex Client
+    description: Vertex web client
+    version: ""
+paths:
+    /api/ping:
+        get:
+            summary: Ping the app
+            operationId: ping
+            responses:
+                "204":
+                    description: No Content
+components: {}

@@ -169,6 +169,21 @@ components:
                     type: string
                 username:
                     type: string
+        BaselineBaseline:
+            type: object
+            properties:
+                date:
+                    type: string
+                description:
+                    type: string
+                version:
+                    type: string
+                vertex:
+                    type: string
+                vertex_client:
+                    type: string
+                vertex_services:
+                    type: string
         PatchSettingsInput:
             type: object
             properties:
@@ -195,21 +210,6 @@ components:
                 webhook:
                     type: string
                     nullable: true
-        TypesBaseline:
-            type: object
-            properties:
-                date:
-                    type: string
-                description:
-                    type: string
-                version:
-                    type: string
-                vertex:
-                    type: string
-                vertex_client:
-                    type: string
-                vertex_services:
-                    type: string
         TypesCPU:
             type: object
             properties:
@@ -291,7 +291,7 @@ components:
             type: object
             properties:
                 baseline:
-                    $ref: '#/components/schemas/TypesBaseline'
+                    $ref: '#/components/schemas/BaselineBaseline'
                 updating:
                     type: boolean
 tags:
