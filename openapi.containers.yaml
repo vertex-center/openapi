@@ -804,6 +804,9 @@ components:
                 display_name:
                     type: string
                     example: Database Port
+                id:
+                    type: string
+                    format: uuid
                 name:
                     type: string
                     example: DB_PORT
