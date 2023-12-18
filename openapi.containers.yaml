@@ -4,10 +4,49 @@ info:
     description: Create and manage containers.
     version: ""
 paths:
-    /api/container/{container_id}:
+    /api/containers:
         get:
             tags:
-                - Container
+                - Containers
+            summary: Get containers
+            operationId: getContainers
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesContainer'
+        post:
+            tags:
+                - Containers
+            summary: Create a container
+            operationId: createContainer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateContainerInput'
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesContainer'
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to create container
+    /api/containers/{container_id}:
+        get:
+            tags:
+                - Containers
             summary: Get a container
             operationId: getContainer
             parameters:
@@ -33,7 +72,7 @@ paths:
                                 error: container not found
         delete:
             tags:
-                - Container
+                - Containers
             summary: Delete a container
             operationId: deleteContainer
             parameters:
@@ -62,7 +101,7 @@ paths:
                                 error: container still running
         patch:
             tags:
-                - Container
+                - Containers
             summary: Patch a container
             operationId: patchContainer
             parameters:
@@ -94,10 +133,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to patch container
-    /api/container/{container_id}/docker:
+    /api/containers/{container_id}/docker:
         get:
             tags:
-                - Container
+                - Containers
             summary: Get Docker container info
             operationId: getDockerContainer
             parameters:
@@ -129,10 +168,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to get Docker container info
-    /api/container/{container_id}/docker/recreate:
+    /api/containers/{container_id}/docker/recreate:
         post:
             tags:
-                - Container
+                - Containers
             summary: Recreate Docker container
             operationId: recreateDockerContainer
             parameters:
@@ -159,10 +198,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to recreate Docker container
-    /api/container/{container_id}/environment:
+    /api/containers/{container_id}/environment:
         get:
             tags:
-                - Container
+                - Containers
             summary: Get container environment
             operationId: getContainerEnvironment
             parameters:
@@ -197,7 +236,7 @@ paths:
                                 error: failed to get container environment
         patch:
             tags:
-                - Container
+                - Containers
             summary: Patch a container environment
             operationId: patchContainerEnvironment
             parameters:
@@ -229,10 +268,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to patch container environment
-    /api/container/{container_id}/events:
+    /api/containers/{container_id}/events:
         get:
             tags:
-                - Container
+                - Containers
             summary: Get container events
             description: Get events for a container, sent as Server-Sent Events (SSE).
             operationId: eventsContainer
@@ -260,10 +299,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container events
-    /api/container/{container_id}/logs:
+    /api/containers/{container_id}/logs:
         get:
             tags:
-                - Container
+                - Containers
             summary: Get container logs
             description: Get latest container logs.
             operationId: getContainerLogs
@@ -297,10 +336,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container logs
-    /api/container/{container_id}/start:
+    /api/containers/{container_id}/start:
         post:
             tags:
-                - Container
+                - Containers
             summary: Start a container
             operationId: startContainer
             parameters:
@@ -327,10 +366,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to start container
-    /api/container/{container_id}/stop:
+    /api/containers/{container_id}/stop:
         post:
             tags:
-                - Container
+                - Containers
             summary: Stop a container
             operationId: stopContainer
             parameters:
@@ -357,10 +396,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to stop container
-    /api/container/{container_id}/tag/{tag_id}:
+    /api/containers/{container_id}/tags/{tag_id}:
         put:
             tags:
-                - Container
+                - Containers
             summary: Link tag to container
             operationId: addContainerTag
             parameters:
@@ -386,10 +425,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to link tag to container
-    /api/container/{container_id}/versions:
+    /api/containers/{container_id}/versions:
         get:
             tags:
-                - Container
+                - Containers
             summary: Get container image versions
             description: Get the possible versions of the container image that can be used.
             operationId: getContainerVersions
@@ -428,10 +467,10 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container image versions
-    /api/container/{container_id}/wait:
+    /api/containers/{container_id}/wait:
         get:
             tags:
-                - Container
+                - Containers
             summary: Wait for a status change
             description: Wait for a status change of the container.
             operationId: waitContainerStatus
@@ -466,21 +505,6 @@ paths:
                             schema: null
                             example:
                                 error: failed to wait for status change
-    /api/containers:
-        get:
-            tags:
-                - Containers
-            summary: Get containers
-            operationId: getContainers
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesContainer'
     /api/containers/checkupdates:
         get:
             tags:
@@ -522,44 +546,6 @@ paths:
             responses:
                 "204":
                     description: No Content
-    /api/service/{service_id}:
-        get:
-            tags:
-                - Service
-            summary: Get service
-            operationId: getService
-            parameters:
-                - name: service_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesService'
-    /api/service/{service_id}/install:
-        post:
-            tags:
-                - Service
-            summary: Install service
-            operationId: installService
-            parameters:
-                - name: service_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesContainer'
     /api/services:
         get:
             tags:
@@ -575,57 +561,25 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesService'
-    /api/tag:
+    /api/services/{service_id}:
         get:
             tags:
-                - Tag
-            summary: Get tag
-            operationId: getTag
+                - Services
+            summary: Get service
+            operationId: getService
             parameters:
-                - name: name
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesTag'
-        post:
-            tags:
-                - Tag
-            summary: Create tag
-            operationId: createTag
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateTagInput'
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesTag'
-    /api/tag/{id}:
-        delete:
-            tags:
-                - Tag
-            summary: Delete tag
-            operationId: deleteTag
-            parameters:
-                - name: id
+                - name: service_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    format: uuid
             responses:
                 "200":
                     description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesService'
     /api/tags:
         get:
             tags:
@@ -641,8 +595,65 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/TypesTag'
+        post:
+            tags:
+                - Tags
+            summary: Create tag
+            operationId: createTag
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateTagInput'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesTag'
+    /api/tags/{id}:
+        delete:
+            tags:
+                - Tags
+            summary: Delete tag
+            operationId: deleteTag
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: OK
+    /api/tags/{name}:
+        get:
+            tags:
+                - Tags
+            summary: Get tag
+            operationId: getTag
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesTag'
 components:
     schemas:
+        CreateContainerInput:
+            type: object
+            properties:
+                service_id:
+                    type: string
         CreateTagInput:
             type: object
             properties:
@@ -969,10 +980,7 @@ components:
                     type: string
                     example: "3000"
 tags:
-    - name: Container
     - name: Containers
     - name: Metrics
-    - name: Service
     - name: Services
-    - name: Tag
     - name: Tags

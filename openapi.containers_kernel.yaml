@@ -4,7 +4,21 @@ info:
     description: Create and manage containers.
     version: ""
 paths:
-    /api/docker/container:
+    /api/docker/containers:
+        get:
+            tags:
+                - Docker
+            summary: Get containers
+            operationId: getContainers
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesDockerContainer'
         post:
             tags:
                 - Docker
@@ -22,7 +36,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TypesCreateContainerResponse'
-    /api/docker/container/{id}:
+    /api/docker/containers/{id}:
         delete:
             tags:
                 - Docker
@@ -37,7 +51,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/info:
+    /api/docker/containers/{id}/info:
         get:
             tags:
                 - Docker
@@ -56,7 +70,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TypesInfoContainerResponse'
-    /api/docker/container/{id}/logs/stderr:
+    /api/docker/containers/{id}/logs/stderr:
         get:
             tags:
                 - Docker
@@ -72,7 +86,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/logs/stdout:
+    /api/docker/containers/{id}/logs/stdout:
         get:
             tags:
                 - Docker
@@ -88,7 +102,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/mounts:
+    /api/docker/containers/{id}/mounts:
         delete:
             tags:
                 - Docker
@@ -103,7 +117,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/start:
+    /api/docker/containers/{id}/start:
         post:
             tags:
                 - Docker
@@ -118,7 +132,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/stop:
+    /api/docker/containers/{id}/stop:
         post:
             tags:
                 - Docker
@@ -133,7 +147,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/container/{id}/wait/{cond}:
+    /api/docker/containers/{id}/wait/{cond}:
         get:
             tags:
                 - Docker
@@ -153,22 +167,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/containers:
-        get:
-            tags:
-                - Docker
-            summary: Get containers
-            operationId: getContainers
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesDockerContainer'
-    /api/docker/image/{id}/info:
+    /api/docker/images/{id}/info:
         get:
             tags:
                 - Docker
@@ -187,7 +186,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TypesInfoImageResponse'
-    /api/docker/image/build:
+    /api/docker/images/build:
         post:
             tags:
                 - Docker
@@ -201,7 +200,7 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/docker/image/pull:
+    /api/docker/images/pull:
         post:
             tags:
                 - Docker
