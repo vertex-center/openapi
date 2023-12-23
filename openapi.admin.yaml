@@ -60,15 +60,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TypesUpdate'
-        post:
-            tags:
-                - Update
-            summary: Install the latest version
-            description: This endpoint will install the latest version of Vertex.
-            operationId: installUpdate
-            responses:
-                "200":
-                    description: OK
 components:
     schemas:
         BaselineBaseline:
@@ -117,8 +108,6 @@ components:
             properties:
                 baseline:
                     $ref: '#/components/schemas/BaselineBaseline'
-                updating:
-                    type: boolean
 tags:
     - name: Checks
     - name: Settings
