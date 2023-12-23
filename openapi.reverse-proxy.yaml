@@ -4,6 +4,17 @@ info:
     description: Redirect traffic to your containers.
     version: ""
 paths:
+    /api/about:
+        get:
+            summary: Get server info
+            operationId: getAbout
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CommonAbout'
     /api/ping:
         get:
             summary: Ping the app
@@ -62,6 +73,24 @@ components:
             required:
                 - source
                 - target
+        CommonAbout:
+            type: object
+            properties:
+                arch:
+                    type: string
+                    example: amd64
+                commit:
+                    type: string
+                    example: cd4ba2876f45775287f426c13adb1868f7c96222
+                date:
+                    type: string
+                    example: 2006-01-02T15:04:05Z07:00
+                os:
+                    type: string
+                    example: linux
+                version:
+                    type: string
+                    example: 1.2.3
 tags:
     - name: Redirect
     - name: Redirects
