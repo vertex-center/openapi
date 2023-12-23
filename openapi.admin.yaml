@@ -14,46 +14,6 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/hardware/cpus:
-        get:
-            tags:
-                - Hardware
-            summary: Get CPUs
-            description: Get CPUs information.
-            operationId: getCPUs
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesCPU'
-    /api/hardware/host:
-        get:
-            tags:
-                - Hardware
-            summary: Get host
-            description: Get host information.
-            operationId: getHost
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesHost'
-    /api/hardware/reboot:
-        post:
-            tags:
-                - Hardware
-            summary: Reboot
-            description: Reboot the host.
-            operationId: reboot
-            responses:
-                "200":
-                    description: OK
     /api/ping:
         get:
             summary: Ping the app
@@ -87,57 +47,6 @@ paths:
             responses:
                 "200":
                     description: OK
-    /api/ssh:
-        get:
-            tags:
-                - SSH
-            summary: Get all SSH keys
-            operationId: getSSHKeys
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesPublicKey'
-        post:
-            tags:
-                - SSH
-            summary: Add an SSH key
-            operationId: addSSHKey
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/AddSSHKeyInput'
-            responses:
-                "200":
-                    description: OK
-        delete:
-            tags:
-                - SSH
-            summary: Delete SSH key
-            operationId: deleteSSHKey
-            responses:
-                "200":
-                    description: OK
-    /api/ssh/users:
-        get:
-            tags:
-                - SSH
-            summary: Get all users that can have SSH keys
-            operationId: getSSHUsers
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    type: string
     /api/update:
         get:
             tags:
@@ -162,13 +71,6 @@ paths:
                     description: OK
 components:
     schemas:
-        AddSSHKeyInput:
-            type: object
-            properties:
-                authorized_key:
-                    type: string
-                username:
-                    type: string
         BaselineBaseline:
             type: object
             properties:
@@ -210,83 +112,6 @@ components:
                 webhook:
                     type: string
                     nullable: true
-        TypesCPU:
-            type: object
-            properties:
-                cache_size:
-                    type: integer
-                    format: int32
-                core_id:
-                    type: string
-                cores_count:
-                    type: integer
-                    format: int32
-                count:
-                    type: integer
-                    format: int32
-                family:
-                    type: string
-                flags:
-                    type: array
-                    items:
-                        type: string
-                mhz:
-                    type: number
-                    format: double
-                microcode:
-                    type: string
-                model:
-                    type: string
-                model_name:
-                    type: string
-                physical_id:
-                    type: string
-                stepping:
-                    type: integer
-                    format: int32
-                vendor_id:
-                    type: string
-        TypesHost:
-            type: object
-            properties:
-                boot_time:
-                    type: integer
-                    format: int64
-                host_id:
-                    type: string
-                hostname:
-                    type: string
-                kernel_arch:
-                    type: string
-                kernel_version:
-                    type: string
-                os:
-                    type: string
-                platform:
-                    type: string
-                platform_family:
-                    type: string
-                platform_version:
-                    type: string
-                procs:
-                    type: integer
-                    format: int64
-                uptime:
-                    type: integer
-                    format: int64
-                virtualization_role:
-                    type: string
-                virtualization_system:
-                    type: string
-        TypesPublicKey:
-            type: object
-            properties:
-                fingerprint_sha_256:
-                    type: string
-                type:
-                    type: string
-                username:
-                    type: string
         TypesUpdate:
             type: object
             properties:
@@ -296,7 +121,5 @@ components:
                     type: boolean
 tags:
     - name: Checks
-    - name: Hardware
-    - name: SSH
     - name: Settings
     - name: Update
