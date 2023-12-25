@@ -225,6 +225,32 @@ paths:
             responses:
                 "200":
                     description: OK
+    /api/docker/volumes:
+        post:
+            tags:
+                - Docker
+            summary: Create volume
+            operationId: createVolume
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateVolumeInput'
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VolumeVolume'
+        delete:
+            tags:
+                - Docker
+            summary: Delete volume
+            operationId: deleteVolume
+            responses:
+                "200":
+                    description: OK
     /api/ping:
         get:
             summary: Ping the app
@@ -288,6 +314,10 @@ components:
                         type: object
                 image_name:
                     type: string
+                mounts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MountMount'
                 port_bindings:
                     type: object
                     additionalProperties:
@@ -298,6 +328,72 @@ components:
                     type: object
                     additionalProperties:
                         type: string
+        CreateVolumeInput:
+            type: object
+            properties:
+                name:
+                    type: string
+        MountBindOptions:
+            type: object
+            properties:
+                CreateMountpoint:
+                    type: boolean
+                NonRecursive:
+                    type: boolean
+                Propagation:
+                    type: string
+        MountClusterOptions:
+            type: object
+        MountDriver:
+            type: object
+            properties:
+                Name:
+                    type: string
+                Options:
+                    type: object
+                    additionalProperties:
+                        type: string
+        MountMount:
+            type: object
+            properties:
+                BindOptions:
+                    $ref: '#/components/schemas/MountBindOptions'
+                ClusterOptions:
+                    $ref: '#/components/schemas/MountClusterOptions'
+                Consistency:
+                    type: string
+                ReadOnly:
+                    type: boolean
+                Source:
+                    type: string
+                Target:
+                    type: string
+                TmpfsOptions:
+                    $ref: '#/components/schemas/MountTmpfsOptions'
+                Type:
+                    type: string
+                VolumeOptions:
+                    $ref: '#/components/schemas/MountVolumeOptions'
+        MountTmpfsOptions:
+            type: object
+            properties:
+                Mode:
+                    type: integer
+                    format: int32
+                SizeBytes:
+                    type: integer
+                    format: int64
+        MountVolumeOptions:
+            type: object
+            properties:
+                DriverConfig:
+                    $ref: '#/components/schemas/MountDriver'
+                Labels:
+                    type: object
+                    additionalProperties:
+                        type: string
+                NoCopy:
+                    type: boolean
         NatPortBinding:
             type: object
             properties:
@@ -310,6 +406,12 @@ components:
             properties:
                 image:
                     type: string
+        SwarmVersion:
+            type: object
+            properties:
+                Index:
+                    type: integer
+                    format: int64
         TypesCreateContainerResponse:
             type: object
             properties:
@@ -372,6 +474,164 @@ components:
                     type: string
                 source:
                     type: string
+        VolumeAccessMode:
+            type: object
+            properties:
+                BlockVolume:
+                    $ref: '#/components/schemas/VolumeTypeBlock'
+                MountVolume:
+                    $ref: '#/components/schemas/VolumeTypeMount'
+                Scope:
+                    type: string
+                Sharing:
+                    type: string
+        VolumeCapacityRange:
+            type: object
+            properties:
+                LimitBytes:
+                    type: integer
+                    format: int64
+                RequiredBytes:
+                    type: integer
+                    format: int64
+        VolumeClusterVolume:
+            type: object
+            properties:
+                CreatedAt:
+                    type: string
+                    format: date-time
+                ID:
+                    type: string
+                Info:
+                    $ref: '#/components/schemas/VolumeInfo'
+                PublishStatus:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VolumePublishStatus'
+                Spec:
+                    $ref: '#/components/schemas/VolumeClusterVolumeSpec'
+                UpdatedAt:
+                    type: string
+                    format: date-time
+                Version:
+                    $ref: '#/components/schemas/SwarmVersion'
+        VolumeClusterVolumeSpec:
+            type: object
+            properties:
+                AccessMode:
+                    $ref: '#/components/schemas/VolumeAccessMode'
+                AccessibilityRequirements:
+                    $ref: '#/components/schemas/VolumeTopologyRequirement'
+                Availability:
+                    type: string
+                CapacityRange:
+                    $ref: '#/components/schemas/VolumeCapacityRange'
+                Group:
+                    type: string
+                Secrets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VolumeSecret'
+        VolumeInfo:
+            type: object
+            properties:
+                AccessibleTopology:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VolumeTopology'
+                CapacityBytes:
+                    type: integer
+                    format: int64
+                VolumeContext:
+                    type: object
+                    additionalProperties:
+                        type: string
+                VolumeID:
+                    type: string
+        VolumePublishStatus:
+            type: object
+            properties:
+                NodeID:
+                    type: string
+                PublishContext:
+                    type: object
+                    additionalProperties:
+                        type: string
+                State:
+                    type: string
+        VolumeSecret:
+            type: object
+            properties:
+                Key:
+                    type: string
+                Secret:
+                    type: string
+        VolumeTopology:
+            type: object
+            properties:
+                Segments:
+                    type: object
+                    additionalProperties:
+                        type: string
+        VolumeTopologyRequirement:
+            type: object
+            properties:
+                Preferred:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VolumeTopology'
+                Requisite:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VolumeTopology'
+        VolumeTypeBlock:
+            type: object
+        VolumeTypeMount:
+            type: object
+            properties:
+                FsType:
+                    type: string
+                MountFlags:
+                    type: array
+                    items:
+                        type: string
+        VolumeUsageData:
+            type: object
+            properties:
+                RefCount:
+                    type: integer
+                    format: int64
+                Size:
+                    type: integer
+                    format: int64
+        VolumeVolume:
+            type: object
+            properties:
+                ClusterVolume:
+                    $ref: '#/components/schemas/VolumeClusterVolume'
+                CreatedAt:
+                    type: string
+                Driver:
+                    type: string
+                Labels:
+                    type: object
+                    additionalProperties:
+                        type: string
+                Mountpoint:
+                    type: string
+                Name:
+                    type: string
+                Options:
+                    type: object
+                    additionalProperties:
+                        type: string
+                Scope:
+                    type: string
+                Status:
+                    type: object
+                    additionalProperties: {}
+                UsageData:
+                    $ref: '#/components/schemas/VolumeUsageData'
 tags:
     - name: Docker
       description: Docker wrapper
