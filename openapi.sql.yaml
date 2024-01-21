@@ -124,12 +124,12 @@ components:
                 name:
                     type: string
                     example: Postgres
-                service_id:
-                    type: string
-                    example: postgres
                 status:
                     type: string
                     example: running
+                template_id:
+                    type: string
+                    example: postgres
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 user_id:

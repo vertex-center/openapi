@@ -75,11 +75,11 @@ components:
                         $ref: '#/components/schemas/TypesDatabaseEnvironment'
                 description:
                     type: string
-                    example: The authentication service of Vertex.
+                    example: The authentication backend of Vertex.
                 environment:
                     type: array
                     items:
-                        $ref: '#/components/schemas/TypesServiceEnv'
+                        $ref: '#/components/schemas/TypesTemplateEnv'
                 features:
                     $ref: '#/components/schemas/TypesFeatures'
                 icon:
@@ -90,7 +90,7 @@ components:
                     type: string
                     example: vertex-auth
                 methods:
-                    $ref: '#/components/schemas/TypesServiceMethods'
+                    $ref: '#/components/schemas/TypesTemplateMethods'
                 name:
                     type: string
                     example: Vertex Auth
@@ -161,13 +161,13 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/TypesDatabaseFeature'
-        TypesServiceClone:
+        TypesTemplateClone:
             type: object
             properties:
                 repository:
                     type: string
                     example: https://github.com/vertex-center/vertex
-        TypesServiceEnv:
+        TypesTemplateEnv:
             type: object
             properties:
                 default:
@@ -189,7 +189,7 @@ components:
                 type:
                     type: string
                     example: port
-        TypesServiceMethodDocker:
+        TypesTemplateMethodDocker:
             type: object
             properties:
                 capabilities:
@@ -197,7 +197,7 @@ components:
                     items:
                         type: string
                 clone:
-                    $ref: '#/components/schemas/TypesServiceClone'
+                    $ref: '#/components/schemas/TypesTemplateClone'
                 command:
                     type: string
                     nullable: true
@@ -225,11 +225,11 @@ components:
                     type: object
                     additionalProperties:
                         type: string
-        TypesServiceMethods:
+        TypesTemplateMethods:
             type: object
             properties:
                 docker:
-                    $ref: '#/components/schemas/TypesServiceMethodDocker'
+                    $ref: '#/components/schemas/TypesTemplateMethodDocker'
         TypesURL:
             type: object
             properties:

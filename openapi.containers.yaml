@@ -557,40 +557,6 @@ paths:
             responses:
                 "204":
                     description: No Content
-    /api/services:
-        get:
-            tags:
-                - Services
-            summary: Get services
-            operationId: getServices
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesService'
-    /api/services/{service_id}:
-        get:
-            tags:
-                - Services
-            summary: Get service
-            operationId: getService
-            parameters:
-                - name: service_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/TypesService'
     /api/tags:
         get:
             tags:
@@ -658,6 +624,40 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TypesTag'
+    /api/templates:
+        get:
+            tags:
+                - Templates
+            summary: Get templates
+            operationId: getTemplates
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesTemplate'
+    /api/templates/{template_id}:
+        get:
+            tags:
+                - Templates
+            summary: Get template
+            operationId: getTemplate
+            parameters:
+                - name: template_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TypesTemplate'
 components:
     schemas:
         CommonAbout:
@@ -681,7 +681,9 @@ components:
         CreateContainerInput:
             type: object
             properties:
-                service_id:
+                image:
+                    type: string
+                template_id:
                     type: string
         CreateTagInput:
             type: object
@@ -750,12 +752,12 @@ components:
                 name:
                     type: string
                     example: Postgres
-                service_id:
-                    type: string
-                    example: postgres
                 status:
                     type: string
                     example: running
+                template_id:
+                    type: string
+                    example: postgres
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 user_id:
@@ -864,7 +866,19 @@ components:
                     format: int32
                 kind:
                     type: string
-        TypesService:
+        TypesTag:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                    example: Vertex SQL
+                user_id:
+                    type: string
+                    format: uuid
+        TypesTemplate:
             type: object
             properties:
                 color:
@@ -877,11 +891,11 @@ components:
                         $ref: '#/components/schemas/TypesDatabaseEnvironment'
                 description:
                     type: string
-                    example: The authentication service of Vertex.
+                    example: The authentication backend of Vertex.
                 environment:
                     type: array
                     items:
-                        $ref: '#/components/schemas/TypesServiceEnv'
+                        $ref: '#/components/schemas/TypesTemplateEnv'
                 features:
                     $ref: '#/components/schemas/TypesFeatures'
                 icon:
@@ -892,7 +906,7 @@ components:
                     type: string
                     example: vertex-auth
                 methods:
-                    $ref: '#/components/schemas/TypesServiceMethods'
+                    $ref: '#/components/schemas/TypesTemplateMethods'
                 name:
                     type: string
                     example: Vertex Auth
@@ -908,13 +922,13 @@ components:
                     type: integer
                     format: int32
                     example: 2
-        TypesServiceClone:
+        TypesTemplateClone:
             type: object
             properties:
                 repository:
                     type: string
                     example: https://github.com/vertex-center/vertex
-        TypesServiceEnv:
+        TypesTemplateEnv:
             type: object
             properties:
                 default:
@@ -936,7 +950,7 @@ components:
                 type:
                     type: string
                     example: port
-        TypesServiceMethodDocker:
+        TypesTemplateMethodDocker:
             type: object
             properties:
                 capabilities:
@@ -944,7 +958,7 @@ components:
                     items:
                         type: string
                 clone:
-                    $ref: '#/components/schemas/TypesServiceClone'
+                    $ref: '#/components/schemas/TypesTemplateClone'
                 command:
                     type: string
                     nullable: true
@@ -972,23 +986,11 @@ components:
                     type: object
                     additionalProperties:
                         type: string
-        TypesServiceMethods:
+        TypesTemplateMethods:
             type: object
             properties:
                 docker:
-                    $ref: '#/components/schemas/TypesServiceMethodDocker'
-        TypesTag:
-            type: object
-            properties:
-                id:
-                    type: string
-                    format: uuid
-                name:
-                    type: string
-                    example: Vertex SQL
-                user_id:
-                    type: string
-                    format: uuid
+                    $ref: '#/components/schemas/TypesTemplateMethodDocker'
         TypesURL:
             type: object
             properties:
@@ -1014,5 +1016,5 @@ components:
 tags:
     - name: Containers
     - name: Metrics
-    - name: Services
     - name: Tags
+    - name: Templates
