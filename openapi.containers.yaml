@@ -683,8 +683,10 @@ components:
             properties:
                 image:
                     type: string
+                    nullable: true
                 template_id:
                     type: string
+                    nullable: true
         CreateTagInput:
             type: object
             properties:
@@ -758,6 +760,7 @@ components:
                 template_id:
                     type: string
                     example: postgres
+                    nullable: true
                 update:
                     $ref: '#/components/schemas/TypesContainerUpdate'
                 user_id:
