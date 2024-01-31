@@ -342,6 +342,10 @@ components:
                     type: boolean
                 Propagation:
                     type: string
+                ReadOnlyForceRecursive:
+                    type: boolean
+                ReadOnlyNonRecursive:
+                    type: boolean
         MountClusterOptions:
             type: object
         MountDriver:
