@@ -205,10 +205,6 @@ components:
                     type: string
                     example: Dockerfile
                     nullable: true
-                environment:
-                    type: object
-                    additionalProperties:
-                        type: string
                 image:
                     type: string
                     example: ghcr.io/vertex-center/vertex
