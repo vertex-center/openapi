@@ -45,11 +45,11 @@ jobs:
 
       - name: Generate openapi.yaml
         run: |
-          cd vertex
+          cd vertex/server
           go run ./cmd/openapi
-          cd ..
+          cd ../..
           rm -rf openapi/*.yaml
-          cp -r vertex/openapi/. openapi/
+          cp -r vertex/server/openapi/. openapi/
 
       - name: Commit and push changes if needed
         run: |
