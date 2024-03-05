@@ -347,6 +347,69 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container logs
+    /api/containers/{container_id}/ports:
+        get:
+            tags:
+                - Containers
+            summary: Get container ports
+            operationId: getContainerPorts
+            parameters:
+                - name: container_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesPort'
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+        patch:
+            tags:
+                - Containers
+            summary: Patch container ports
+            operationId: patchContainerPorts
+            parameters:
+                - name: container_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchContainerPortsInput'
+            responses:
+                "200":
+                    description: OK
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to patch container ports
     /api/containers/{container_id}/start:
         post:
             tags:
@@ -714,6 +777,13 @@ components:
                 name:
                     type: string
                     nullable: true
+        PatchContainerPortsInput:
+            type: object
+            properties:
+                Ports:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesPort'
         TypesContainer:
             type: object
             properties:
@@ -872,6 +942,21 @@ components:
                     format: int32
                 kind:
                     type: string
+        TypesPort:
+            type: object
+            properties:
+                container_id:
+                    type: string
+                    format: uuid
+                id:
+                    type: string
+                    format: uuid
+                in:
+                    type: string
+                    example: "5432"
+                out:
+                    type: string
+                    example: "5432"
         TypesTag:
             type: object
             properties:
@@ -916,6 +1001,10 @@ components:
                 name:
                     type: string
                     example: Vertex Auth
+                ports:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TypesTemplatePort'
                 repository:
                     type: string
                     example: https://github.com/vertex-center/vertex
@@ -927,7 +1016,7 @@ components:
                 version:
                     type: integer
                     format: int32
-                    example: 2
+                    example: 3
         TypesTemplateClone:
             type: object
             properties:
@@ -993,6 +1082,15 @@ components:
             properties:
                 docker:
                     $ref: '#/components/schemas/TypesTemplateMethodDocker'
+        TypesTemplatePort:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: Server Port
+                port:
+                    type: string
+                    example: "3000"
         TypesURL:
             type: object
             properties:
