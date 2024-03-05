@@ -684,6 +684,9 @@ components:
                 image:
                     type: string
                     nullable: true
+                image_tag:
+                    type: string
+                    nullable: true
                 template_id:
                     type: string
                     nullable: true
