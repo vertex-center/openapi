@@ -376,40 +376,6 @@ paths:
                             schema: null
                             example:
                                 error: container not found
-        patch:
-            tags:
-                - Containers
-            summary: Patch container ports
-            operationId: patchContainerPorts
-            parameters:
-                - name: container_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                    format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/PatchContainerPortsInput'
-            responses:
-                "200":
-                    description: OK
-                "404":
-                    description: Container not found
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: container not found
-                "500":
-                    description: Internal Server Error
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: failed to patch container ports
     /api/containers/{container_id}/start:
         post:
             tags:
@@ -620,6 +586,91 @@ paths:
             responses:
                 "204":
                     description: No Content
+    /api/ports:
+        post:
+            tags:
+                - Ports
+            summary: Create container port
+            operationId: createContainerPort
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateContainerPortInput'
+            responses:
+                "201":
+                    description: Created
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to create port
+    /api/ports/{port_id}:
+        delete:
+            tags:
+                - Ports
+            summary: Delete container port
+            operationId: deleteContainerPort
+            parameters:
+                - name: port_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: OK
+                "404":
+                    description: Port not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to delete port
+        patch:
+            tags:
+                - Ports
+            summary: Patch container ports
+            operationId: patchContainerPort
+            parameters:
+                - name: port_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchContainerPortInput'
+            responses:
+                "200":
+                    description: OK
+                "404":
+                    description: Port not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: port not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to patch port
     /api/tags:
         get:
             tags:
@@ -753,6 +804,16 @@ components:
                 template_id:
                     type: string
                     nullable: true
+        CreateContainerPortInput:
+            type: object
+            properties:
+                container_id:
+                    type: string
+                    format: uuid
+                in:
+                    type: string
+                out:
+                    type: string
         CreateTagInput:
             type: object
             properties:
@@ -777,13 +838,13 @@ components:
                 name:
                     type: string
                     nullable: true
-        PatchContainerPortsInput:
+        PatchContainerPortInput:
             type: object
             properties:
-                Ports:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TypesPort'
+                In:
+                    type: string
+                Out:
+                    type: string
         TypesContainer:
             type: object
             properties:
@@ -1116,5 +1177,6 @@ components:
 tags:
     - name: Containers
     - name: Metrics
+    - name: Ports
     - name: Tags
     - name: Templates
