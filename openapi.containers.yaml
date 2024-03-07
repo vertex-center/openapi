@@ -209,42 +209,6 @@ paths:
                             schema: null
                             example:
                                 error: failed to recreate Docker container
-    /api/containers/{container_id}/environment:
-        get:
-            tags:
-                - Containers
-            summary: Get container environment
-            operationId: getContainerEnvironment
-            parameters:
-                - name: container_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                    format: uuid
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesEnvVariable'
-                "404":
-                    description: Container not found
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: container not found
-                "500":
-                    description: Internal Server Error
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: failed to get container environment
     /api/containers/{container_id}/events:
         get:
             tags:
@@ -313,35 +277,6 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container logs
-    /api/containers/{container_id}/ports:
-        get:
-            tags:
-                - Containers
-            summary: Get container ports
-            operationId: getContainerPorts
-            parameters:
-                - name: container_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                    format: uuid
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/TypesPort'
-                "404":
-                    description: Container not found
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: container not found
     /api/containers/{container_id}/start:
         post:
             tags:
@@ -536,16 +471,44 @@ paths:
                 "200":
                     description: OK
     /api/environments:
+        get:
+            tags:
+                - Environment variables
+            summary: Get an environment variables
+            operationId: getEnvironment
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesEnvVariable'
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to get container environment
         post:
             tags:
                 - Environment variables
-            summary: Create a container environment
-            operationId: createContainerEnvironment
+            summary: Create an environment variable
+            operationId: createEnvironment
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateContainerEnvironmentInput'
+                            $ref: '#/components/schemas/CreateEnvironmentInput'
             responses:
                 "201":
                     description: Created
@@ -560,8 +523,8 @@ paths:
         delete:
             tags:
                 - Environment variables
-            summary: Delete a container environment
-            operationId: deleteContainerEnvironment
+            summary: Delete an environment variable
+            operationId: deleteEnvironment
             parameters:
                 - name: env_id
                   in: path
@@ -589,8 +552,8 @@ paths:
         patch:
             tags:
                 - Environment variables
-            summary: Patch a container environment
-            operationId: patchContainerEnvironment
+            summary: Patch an environment variable
+            operationId: patchEnvironment
             parameters:
                 - name: env_id
                   in: path
@@ -602,7 +565,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/PatchContainerEnvironmentInput'
+                            $ref: '#/components/schemas/PatchEnvironmentInput'
             responses:
                 "200":
                     description: OK
@@ -638,16 +601,37 @@ paths:
                 "204":
                     description: No Content
     /api/ports:
+        get:
+            tags:
+                - Ports
+            summary: Get ports
+            operationId: getPorts
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/TypesPort'
+                "404":
+                    description: Container not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: container not found
         post:
             tags:
                 - Ports
-            summary: Create container port
-            operationId: createContainerPort
+            summary: Create port
+            operationId: createPort
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateContainerPortInput'
+                            $ref: '#/components/schemas/CreatePortInput'
             responses:
                 "201":
                     description: Created
@@ -662,8 +646,8 @@ paths:
         delete:
             tags:
                 - Ports
-            summary: Delete container port
-            operationId: deleteContainerPort
+            summary: Delete port
+            operationId: deletePort
             parameters:
                 - name: port_id
                   in: path
@@ -691,8 +675,8 @@ paths:
         patch:
             tags:
                 - Ports
-            summary: Patch container ports
-            operationId: patchContainerPort
+            summary: Patch ports
+            operationId: patchPort
             parameters:
                 - name: port_id
                   in: path
@@ -704,7 +688,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/PatchContainerPortInput'
+                            $ref: '#/components/schemas/PatchPortInput'
             responses:
                 "200":
                     description: OK
@@ -843,18 +827,6 @@ components:
                 version:
                     type: string
                     example: 1.2.3
-        CreateContainerEnvironmentInput:
-            type: object
-            properties:
-                container_id:
-                    type: string
-                    format: uuid
-                name:
-                    type: string
-                type:
-                    type: string
-                value:
-                    type: string
         CreateContainerInput:
             type: object
             properties:
@@ -867,7 +839,19 @@ components:
                 template_id:
                     type: string
                     nullable: true
-        CreateContainerPortInput:
+        CreateEnvironmentInput:
+            type: object
+            properties:
+                container_id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                type:
+                    type: string
+                value:
+                    type: string
+        CreatePortInput:
             type: object
             properties:
                 container_id:
@@ -882,7 +866,19 @@ components:
             properties:
                 name:
                     type: string
-        PatchContainerEnvironmentInput:
+        PatchContainerInput:
+            type: object
+            properties:
+                image_tag:
+                    type: string
+                    nullable: true
+                launch_on_startup:
+                    type: boolean
+                    nullable: true
+                name:
+                    type: string
+                    nullable: true
+        PatchEnvironmentInput:
             type: object
             properties:
                 container_id:
@@ -915,24 +911,12 @@ components:
                 value:
                     type: string
                     example: "5400"
-        PatchContainerInput:
+        PatchPortInput:
             type: object
             properties:
-                image_tag:
+                in:
                     type: string
-                    nullable: true
-                launch_on_startup:
-                    type: boolean
-                    nullable: true
-                name:
-                    type: string
-                    nullable: true
-        PatchContainerPortInput:
-            type: object
-            properties:
-                In:
-                    type: string
-                Out:
+                out:
                     type: string
         TypesContainer:
             type: object
