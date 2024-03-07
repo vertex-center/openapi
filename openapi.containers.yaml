@@ -245,40 +245,6 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container environment
-        patch:
-            tags:
-                - Containers
-            summary: Patch a container environment
-            operationId: patchContainerEnvironment
-            parameters:
-                - name: container_id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                    format: uuid
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/PatchContainerEnvironmentInput'
-            responses:
-                "200":
-                    description: OK
-                "404":
-                    description: Container not found
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: container not found
-                "500":
-                    description: Internal Server Error
-                    content:
-                        application/json:
-                            schema: null
-                            example:
-                                error: failed to patch container environment
     /api/containers/{container_id}/events:
         get:
             tags:
@@ -569,6 +535,91 @@ paths:
             responses:
                 "200":
                     description: OK
+    /api/environments:
+        post:
+            tags:
+                - Environment variables
+            summary: Create a container environment
+            operationId: createContainerEnvironment
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateContainerEnvironmentInput'
+            responses:
+                "201":
+                    description: Created
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to create container environment
+    /api/environments/{env_id}:
+        delete:
+            tags:
+                - Environment variables
+            summary: Delete a container environment
+            operationId: deleteContainerEnvironment
+            parameters:
+                - name: env_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: OK
+                "404":
+                    description: Environment variable not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: environment variable not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to delete container environment
+        patch:
+            tags:
+                - Environment variables
+            summary: Patch a container environment
+            operationId: patchContainerEnvironment
+            parameters:
+                - name: env_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchContainerEnvironmentInput'
+            responses:
+                "200":
+                    description: OK
+                "404":
+                    description: Environment variable not found
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: environment variable not found
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema: null
+                            example:
+                                error: failed to patch container environment
     /api/metrics:
         get:
             tags:
@@ -792,6 +843,16 @@ components:
                 version:
                     type: string
                     example: 1.2.3
+        CreateContainerEnvironmentInput:
+            type: object
+            properties:
+                container_id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                value:
+                    type: string
         CreateContainerInput:
             type: object
             properties:
@@ -822,10 +883,36 @@ components:
         PatchContainerEnvironmentInput:
             type: object
             properties:
-                Env:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TypesEnvVariable'
+                container_id:
+                    type: string
+                    format: uuid
+                default:
+                    type: string
+                    example: "5432"
+                    nullable: true
+                description:
+                    type: string
+                    example: The server database port
+                    nullable: true
+                display_name:
+                    type: string
+                    example: Database Port
+                id:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                    example: DB_PORT
+                secret:
+                    type: boolean
+                    example: true
+                type:
+                    type: string
+                    enum:
+                        - port
+                value:
+                    type: string
+                    example: "5400"
         PatchContainerInput:
             type: object
             properties:
@@ -1176,6 +1263,7 @@ components:
                     example: "3000"
 tags:
     - name: Containers
+    - name: Environment variables
     - name: Metrics
     - name: Ports
     - name: Tags
