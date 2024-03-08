@@ -440,6 +440,8 @@ components:
                     type: array
                     items:
                         type: string
+                state:
+                    type: string
         TypesInfoContainerResponse:
             type: object
             properties:

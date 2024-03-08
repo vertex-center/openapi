@@ -277,6 +277,22 @@ paths:
                             schema: null
                             example:
                                 error: failed to get container logs
+    /api/containers/{container_id}/reload:
+        post:
+            tags:
+                - Containers
+            summary: Reload a container
+            operationId: reloadContainer
+            parameters:
+                - name: container_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "204":
+                    description: No Content
     /api/containers/{container_id}/start:
         post:
             tags:
