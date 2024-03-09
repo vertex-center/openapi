@@ -492,6 +492,12 @@ paths:
                 - Environment variables
             summary: Get an environment variables
             operationId: getEnvironment
+            parameters:
+                - name: container_id
+                  in: query
+                  schema:
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
@@ -622,6 +628,12 @@ paths:
                 - Ports
             summary: Get ports
             operationId: getPorts
+            parameters:
+                - name: container_id
+                  in: query
+                  schema:
+                    type: string
+                    format: uuid
             responses:
                 "200":
                     description: OK
